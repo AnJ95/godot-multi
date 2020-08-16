@@ -9,6 +9,7 @@ const icon_semiactive = preload("res://addons/multi/assets/icons/player_semiacti
 const icon_inactive = preload("res://addons/multi/assets/icons/player_inactive.png")
 
 func _ready():
+	expand_icon = true
 	recreate()
 	Multi.connect("num_connected_players_changed", self, "_on_num_connected_players_changed")
 	num_connected_players_changed()
