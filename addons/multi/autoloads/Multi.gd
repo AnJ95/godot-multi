@@ -1,3 +1,4 @@
+tool
 extends Node
 
 const MAX_PLAYERS = 4
@@ -9,7 +10,9 @@ var __controllers = {}
 var __players = []
 
 func _ready():
-	
+	if Engine.editor_hint:
+		return
+		
 	# Create Player objects
 	for i in range(MAX_PLAYERS):
 		var player = Player.new(i)
