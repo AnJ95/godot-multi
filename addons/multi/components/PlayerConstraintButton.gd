@@ -8,10 +8,14 @@ const icon_active = preload("res://addons/multi/assets/icons/player.png")
 const icon_semiactive = preload("res://addons/multi/assets/icons/player_semiactive.png")
 const icon_inactive = preload("res://addons/multi/assets/icons/player_inactive.png")
 
-
-
 func _ready():
 	recreate()
+	Multi.connect("num_connected_players_changed", self, "_on_num_connected_players_changed")
+	num_connected_players_changed()
+	
+func num_connected_players_changed():
+	var num = Multi.get_num_connected_players()
+	disabled = num < players_min or num > players_max
 
 func _set_text(v):
 	text = v
@@ -22,6 +26,8 @@ func _set_players_min(v):
 func _set_players_max(v):
 	players_max = v
 	recreate()
+	
+
 
 func recreate():
 	var w = icon_active.get_width()
