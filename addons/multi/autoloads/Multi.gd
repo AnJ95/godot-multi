@@ -26,6 +26,7 @@ func _ready():
 	#    will be created, and every InputEventJoypadButton and InputEventJoypadMotion
 	#    will be copied.
 	#    Must be done before the Controllers are added
+	InputMap.load_from_globals()
 	__multiplex_actions()
 	
 	# Add Keyboard as first player
@@ -59,8 +60,11 @@ func __multiplex_actions():
 			InputMap.add_action(converted_action)
 			
 			for event in InputMap.get_action_list(action):
+				var is_keyboard = (MAKE_KEYBOARD_PLAYER_ONE and player_id == 0)
+				var ev_is_joypad = (event is InputEventJoypadButton or event is InputEventJoypadMotion)
+				
 				# Only copy JoypadEvents, unless player 1 is keyboard
-				if (event is InputEventJoypadButton or event is InputEventJoypadMotion) or (MAKE_KEYBOARD_PLAYER_ONE and player_id == 0):
+				if (is_keyboard and !ev_is_joypad) or (!is_keyboard and ev_is_joypad):
 					# Create new copy of the event
 					var new_event:InputEvent = event.duplicate(true)
 					

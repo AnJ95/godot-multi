@@ -6,7 +6,7 @@ onready var player = Multi.player(player_id)
 const SPEED = 80
 var velocity = Vector2()
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	var x = player.get_action_strength("ui_right") - player.get_action_strength("ui_left")
 	var y = player.get_action_strength("ui_down") - player.get_action_strength("ui_up")
 	

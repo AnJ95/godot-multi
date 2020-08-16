@@ -12,23 +12,18 @@ func _ready():
 	expand_icon = true
 	recreate()
 	Multi.connect("num_connected_players_changed", self, "_on_num_connected_players_changed")
-	num_connected_players_changed()
+	_on_num_connected_players_changed()
 	
-func num_connected_players_changed():
+func _on_num_connected_players_changed():
 	var num = Multi.get_num_connected_players()
 	disabled = num < players_min or num > players_max
 
-func _set_text(v):
-	text = v
-	recreate()
 func _set_players_min(v):
 	players_min = v
 	recreate()
 func _set_players_max(v):
 	players_max = v
 	recreate()
-	
-
 
 func recreate():
 	var w = icon_active.get_width()
