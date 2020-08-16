@@ -1,6 +1,7 @@
 tool
 extends Node
 
+const MAKE_KEYBOARD_PLAYER_ONE = true
 const MAX_PLAYERS = 4
 
 const Player = preload("res://addons/multi/scripts/Player.gd")
@@ -8,6 +9,8 @@ const Controller = preload("res://addons/multi/scripts/Controller.gd")
 
 var __controllers = {}
 var __players = []
+
+signal num_connected_players_changed()
 
 func _ready():
 	if Engine.editor_hint:
@@ -25,6 +28,13 @@ func _ready():
 	#    Must be done before the Controllers are added
 	__multiplex_actions()
 	
+	# Add Keyboard as first player
+	if MAKE_KEYBOARD_PLAYER_ONE:
+		var controller = Controller.new()
+		controller.init_from_keyboard()
+		__controllers[-1] = controller
+		player(0).set_controller(controller)
+	
 	# Add all already connected joypads...
 	for device_id in Input.get_connected_joypads():
 		_on_joy_connection_changed(device_id, true)
@@ -38,7 +48,7 @@ func __multiplex_actions():
 		#print("###### " + action)
 		
 		for player_id in range(MAX_PLAYERS):
-			#print("#### " + str(player_id))
+			#print("####   " + str(player_id))
 			
 			var player = __players[player_id]
 			var converted_action = player.__convert_action(action)
@@ -49,23 +59,16 @@ func __multiplex_actions():
 			InputMap.add_action(converted_action)
 			
 			for event in InputMap.get_action_list(action):
-				
-				# Create new copy of the event
-				var new_event:InputEvent = null
-				if event is InputEventJoypadButton:
-					new_event = InputEventJoypadButton.new()
-					new_event.button_index = event.button_index
-				if event is InputEventJoypadMotion:
-					new_event = InputEventJoypadMotion.new()
-					new_event.axis = event.axis
-					new_event.axis_value = event.axis_value
-				
-				if new_event:
-					#print("## " , new_event)
+				# Only copy JoypadEvents, unless player 1 is keyboard
+				if (event is InputEventJoypadButton or event is InputEventJoypadMotion) or (MAKE_KEYBOARD_PLAYER_ONE and player_id == 0):
+					# Create new copy of the event
+					var new_event:InputEvent = event.duplicate(true)
+					
 					# will be set on Player.set_controller
 					# set to something invalid to prevent false actions
 					new_event.device = 100
-				
+					
+					#print("##     " , new_event)
 					InputMap.action_add_event(converted_action, new_event)
 	
 func _on_joy_connection_changed(device_id:int, connected:bool):
@@ -86,6 +89,8 @@ func _on_joy_connection_changed(device_id:int, connected:bool):
 	var controller = __controllers[device_id]
 	controller.set_controller_connected(connected)
 	
+	emit_signal("num_connected_players_changed")
+	
 	# Debug print
 	if connected:
 		print("[CONTROLLER CONNECTED] ", device_id, " ", controller.get_name())
@@ -100,7 +105,7 @@ func get_num_connected_players()->int:
 	return num
 	
 func player(player_id):
-	if player_id >= 0 and __players.size() < player_id:
+	if player_id >= 0 and player_id < __players.size():
 		return __players[player_id]
 	else:
 		printerr("Tried getting player with invalid player_id ", player_id)
