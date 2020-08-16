@@ -21,7 +21,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Multi="*res://addons/Multi/autoloads/Multi.gd"
+Multi="*res://addons/multi/autoloads/Multi.gd"
 
 [editor_plugins]
 

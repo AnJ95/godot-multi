@@ -9,20 +9,28 @@ var __controllers = {}
 var __players = []
 
 func _ready():
+	
+	# Create Player objects
+	for i in range(MAX_PLAYERS):
+		var player = Player.new(i)
+		__players.append(player)
+		
+	# Multiplex all actions
+	#    For an action "action" and for every player, a new action "player_0_action"
+	#    will be created, and every InputEventJoypadButton and InputEventJoypadMotion
+	#    will be copied.
+	#    Must be done before the Controllers are added
+	__multiplex_actions()
+	
 	# Add all already connected joypads...
 	for device_id in Input.get_connected_joypads():
 		_on_joy_connection_changed(device_id, true)
 	
 	# ...and await future changes
 	Input.connect("joy_connection_changed", self, "_on_joy_connection_changed")
-	
-	# Create Player objects
-	for i in range(MAX_PLAYERS):
-		var player = Player.new(i)
-		__players.append(player)
-	
-	# TODO multiplex actions
-	
+
+
+func __multiplex_actions():
 	for action in InputMap.get_actions():
 		#print("###### " + action)
 		
@@ -38,6 +46,8 @@ func _ready():
 			InputMap.add_action(converted_action)
 			
 			for event in InputMap.get_action_list(action):
+				
+				# Create new copy of the event
 				var new_event:InputEvent = null
 				if event is InputEventJoypadButton:
 					new_event = InputEventJoypadButton.new()
@@ -47,14 +57,13 @@ func _ready():
 					new_event.axis = event.axis
 					new_event.axis_value = event.axis_value
 				
-				# TODO this needs to be updated when a Player<->Controller connection is made
-				new_event.device = 0
-				
 				if new_event:
 					#print("## " , new_event)
+					# will be set on Player.set_controller
+					# set to something invalid to prevent false actions
+					new_event.device = 100
+				
 					InputMap.action_add_event(converted_action, new_event)
-	
-	
 	
 func _on_joy_connection_changed(device_id:int, connected:bool):
 	# Add new Controller object if this is the first time connecting
@@ -62,6 +71,13 @@ func _on_joy_connection_changed(device_id:int, connected:bool):
 		var controller = Controller.new()
 		controller.init_from_device(device_id)
 		__controllers[device_id] = controller
+		
+		# Attach to first Player without controller
+		for player_id in range(MAX_PLAYERS):
+			var player = __players[player_id]
+			if !player.has_controller_assigned():
+				player.set_controller(controller)
+				break
 	
 	# Update connection status
 	var controller = __controllers[device_id]

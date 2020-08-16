@@ -1,7 +1,7 @@
 tool
 extends EditorPlugin
 
-const BASE_PATH = "res://addons/Multi/"
+const BASE_PATH = "res://addons/multi/"
 const AUTOLOADS_PATH = BASE_PATH + "autoloads/"
 
 const Dock = preload("res://addons/multi/dock/Dock.tscn")
