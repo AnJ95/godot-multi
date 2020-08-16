@@ -16,9 +16,44 @@ func _ready():
 	# ...and await future changes
 	Input.connect("joy_connection_changed", self, "_on_joy_connection_changed")
 	
+	# Create Player objects
 	for i in range(MAX_PLAYERS):
 		var player = Player.new(i)
 		__players.append(player)
+	
+	# TODO multiplex actions
+	
+	for action in InputMap.get_actions():
+		#print("###### " + action)
+		
+		for player_id in range(MAX_PLAYERS):
+			#print("#### " + str(player_id))
+			
+			var player = __players[player_id]
+			var converted_action = player.__convert_action(action)
+			
+			# Create new player-specific action
+			if InputMap.has_action(converted_action):
+				InputMap.erase_action(converted_action)
+			InputMap.add_action(converted_action)
+			
+			for event in InputMap.get_action_list(action):
+				var new_event:InputEvent = null
+				if event is InputEventJoypadButton:
+					new_event = InputEventJoypadButton.new()
+					new_event.button_index = event.button_index
+				if event is InputEventJoypadMotion:
+					new_event = InputEventJoypadMotion.new()
+					new_event.axis = event.axis
+					new_event.axis_value = event.axis_value
+				
+				# TODO this needs to be updated when a Player<->Controller connection is made
+				new_event.device = 0
+				
+				if new_event:
+					#print("## " , new_event)
+					InputMap.action_add_event(converted_action, new_event)
+	
 	
 	
 func _on_joy_connection_changed(device_id:int, connected:bool):
