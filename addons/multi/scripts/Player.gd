@@ -11,15 +11,11 @@ func _init(player_id:int):
 	
 func __convert_action(action:String)->String:
 	return "player_%d_%s" % [__player_id, action]
-
-func __adjust_input_map():
-	for action in InputMap.get_actions():
-		if action.begins_with(__convert_action("")):
-			for event in InputMap.get_action_list(action):
-				event.device = __controller.__device_id
 	
-func set_controller(controller:Controller)->void:
+func set_controller(controller:Controller, input_map)->void:
+	print("[CONTROLLER ASSIGNED] Player ", __player_id + 1, " to ", controller.get_name())
 	__controller = controller
+	controller.rebind_to_player(self, input_map)
 	emit_signal("controller_connection_changed")
 	
 func has_controller_assigned():

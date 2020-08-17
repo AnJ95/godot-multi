@@ -1,11 +1,17 @@
 tool
 extends Node
 
-const MAKE_KEYBOARD_PLAYER_ONE = true
+const ALLOW_ONE_KEYBOARD_PLAYER = true
+const AUTO_ASSIGN_KEYBOARD_TO_PLAYER_ONE = false
+
+const EXCLUDE_ACTIONS:String = "^ui_"
+
 const MAX_PLAYERS = 4
 
 var __controllers = {}
 var __players = []
+
+var __input_map = {}
 
 # when an input device first enters the stage
 signal new_controller_connected(controller)
@@ -20,20 +26,17 @@ func _ready():
 		var player = Player.new(i)
 		__players.append(player)
 		
-	# Multiplex all actions
-	#    For an action "action" and for every player, a new action "player_0_action"
-	#    will be created.
-	#    Must be done before the Controllers are added
-	InputMap.load_from_globals()
-	__multiplex_actions()
+	# Saves and removes InputMap
+	__preprocess_input_map()
 	
 	# Add Keyboard as first player
-	if MAKE_KEYBOARD_PLAYER_ONE:
+	if ALLOW_ONE_KEYBOARD_PLAYER:
 		var controller = Controller.new()
 		controller.init_from_keyboard()
 		__add_new_controller(controller)
 		
-		player(0).set_controller(controller)
+		if AUTO_ASSIGN_KEYBOARD_TO_PLAYER_ONE:
+			player(0).set_controller(controller, __input_map)
 	
 	# Add all already connected joypads...
 	for device_id in Input.get_connected_joypads():
@@ -42,40 +45,31 @@ func _ready():
 	# ...and await future changes
 	Input.connect("joy_connection_changed", self, "_on_joy_connection_changed")
 
+func _process(_delta):
+	for controller in __controllers.values():
+		if Input.is_action_just_pressed(controller.get_join_action()):
+			var player = __find_first_unassigned_player()
+			if player:
+				player.set_controller(controller, __input_map)
+				controller.remove_join_action()
+
 func __add_new_controller(controller:Controller):
 	__controllers[controller.__device_id] = controller
 	emit_signal("new_controller_connected", controller)
 
-func __multiplex_actions():
+func __preprocess_input_map():
+	InputMap.load_from_globals()
+	
+	var regex = RegEx.new()
+	regex.compile(EXCLUDE_ACTIONS)
+	
 	for action in InputMap.get_actions():
-		#print("###### " + action)
-		
-		for player_id in range(MAX_PLAYERS):
-			#print("####   " + str(player_id))
-			
-			var player = __players[player_id]
-			var converted_action = player.__convert_action(action)
-			
-			# Create new player-specific action
-			if InputMap.has_action(converted_action):
-				InputMap.erase_action(converted_action)
-			InputMap.add_action(converted_action)
-			
-			for event in InputMap.get_action_list(action):
-				var is_keyboard = (MAKE_KEYBOARD_PLAYER_ONE and player_id == 0)
-				var ev_is_joypad = (event is InputEventJoypadButton or event is InputEventJoypadMotion)
-				
-				# Only copy JoypadEvents, unless player 1 is keyboard
-				if (is_keyboard and !ev_is_joypad) or (!is_keyboard and ev_is_joypad):
-					# Create new copy of the event
-					var new_event:InputEvent = event.duplicate(true)
-					
-					# will be set on Player.set_controller
-					# set to something invalid to prevent false actions
-					new_event.device = 100
-					
-					#print("##     " , new_event)
-					InputMap.action_add_event(converted_action, new_event)
+		if regex.search(action):
+			continue
+		__input_map[action] = []
+		for event in InputMap.get_action_list(action):
+			__input_map[action].append(event)
+		InputMap.erase_action(action)
 
 func __find_first_unassigned_player()->Player:
 	for player_id in range(MAX_PLAYERS):
@@ -94,7 +88,7 @@ func _on_joy_connection_changed(device_id:int, connected:bool):
 		
 		# Attach to first Player without controller
 		var player = __find_first_unassigned_player()
-		if player: player.set_controller(controller)
+		if player: player.set_controller(controller, __input_map)
 	
 	# Update connection status
 	var controller = __controllers[device_id]
