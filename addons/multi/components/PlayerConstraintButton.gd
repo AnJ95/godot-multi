@@ -4,10 +4,13 @@ extends Button
 export(int) var players_min:int = 2 setget _set_players_min
 export(int) var players_max:int = 4 setget _set_players_max
 
-const icon_active = preload("res://addons/multi/assets/icons/player.png")
-const icon_semiactive = preload("res://addons/multi/assets/icons/player_semiactive.png")
-const icon_inactive = preload("res://addons/multi/assets/icons/player_inactive.png")
+export var icon_active = preload("res://addons/multi/assets/icons/player.png") setget _set_icon_active
+export var icon_optional = preload("res://addons/multi/assets/icons/player_semiactive.png") setget _set_icon_optional
+export var icon_inactive = preload("res://addons/multi/assets/icons/player_inactive.png") setget _set_icon_inactive
 
+
+#############################################################
+# LIFECYCLE
 func _ready():
 	expand_icon = true
 	recreate()
@@ -18,13 +21,6 @@ func _on_num_connected_players_changed():
 	var num = Multi.get_num_connected_players()
 	disabled = num < players_min or num > players_max
 
-func _set_players_min(v):
-	players_min = v
-	recreate()
-func _set_players_max(v):
-	players_max = v
-	recreate()
-
 func recreate():
 	var w = icon_active.get_width()
 	var h = icon_active.get_height()
@@ -34,7 +30,7 @@ func recreate():
 	image.create(w*Multi.MAX_PLAYERS, h, false, Image.FORMAT_RGBA8)
 	
 	for p in range(players_max):
-		var icon = icon_active if p + 1 <= players_min else icon_semiactive
+		var icon = icon_active if p + 1 <= players_min else icon_optional
 		image.blit_rect(icon.get_data(), Rect2(0, 0, w, h), Vector2(p*w, 0))
 	
 	# convert Image to ImageTexture
@@ -42,4 +38,26 @@ func recreate():
 	texture.create_from_image(image)
 	
 	icon = texture
+	
+#############################################################
+# SETTERS
+func _set_players_min(v):
+	players_min = v
+	recreate()
+	
+func _set_players_max(v):
+	players_max = v
+	recreate()
+	
+func _set_icon_active(v):
+	icon_active = v
+	recreate()
+	
+func _set_icon_optional(v):
+	icon_optional = v
+	recreate()
+
+func _set_icon_inactive(v):
+	icon_inactive = v
+	recreate()
 
