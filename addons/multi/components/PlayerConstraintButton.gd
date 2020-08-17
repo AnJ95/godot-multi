@@ -14,11 +14,12 @@ export var icon_inactive = preload("res://addons/multi/assets/icons/player_inact
 func _ready():
 	expand_icon = true
 	recreate()
-	Multi.connect("num_connected_players_changed", self, "_on_num_connected_players_changed")
-	_on_num_connected_players_changed()
 	
-func _on_num_connected_players_changed():
-	var num = Multi.get_num_connected_players()
+	# Await changes but trigger handler initially
+	Multi.connect("num_assigned_players_changed", self, "_on_num_assigned_players_changed")
+	_on_num_assigned_players_changed(Multi.get_num_assigned_players())
+	
+func _on_num_assigned_players_changed(num):
 	disabled = num < players_min or num > players_max
 
 func recreate():

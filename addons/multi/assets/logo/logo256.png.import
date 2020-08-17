@@ -2,11 +2,16 @@
 
 importer="texture"
 type="StreamTexture"
-valid=false
+path="res://.import/logo256.png-40326cb4c41f2f06c7748cf87670d198.stex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://addons/multi/assets/logo/logo256.png"
+dest_files=[ "res://.import/logo256.png-40326cb4c41f2f06c7748cf87670d198.stex" ]
+
 [params]
 
 compress/mode=0

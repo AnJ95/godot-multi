@@ -4,13 +4,15 @@ extends Node
 const MAKE_KEYBOARD_PLAYER_ONE = true
 const MAX_PLAYERS = 4
 
-const Player = preload("res://addons/multi/scripts/Player.gd")
-const Controller = preload("res://addons/multi/scripts/Controller.gd")
-
 var __controllers = {}
 var __players = []
 
-signal num_connected_players_changed()
+# when an input device first enters the stage
+signal new_controller_connected(controller)
+
+# when the number of Players with a valid input device changes
+signal num_assigned_players_changed(num)
+
 
 func _ready():
 	if Engine.editor_hint:
@@ -23,8 +25,7 @@ func _ready():
 		
 	# Multiplex all actions
 	#    For an action "action" and for every player, a new action "player_0_action"
-	#    will be created, and every InputEventJoypadButton and InputEventJoypadMotion
-	#    will be copied.
+	#    will be created.
 	#    Must be done before the Controllers are added
 	InputMap.load_from_globals()
 	__multiplex_actions()
@@ -33,7 +34,8 @@ func _ready():
 	if MAKE_KEYBOARD_PLAYER_ONE:
 		var controller = Controller.new()
 		controller.init_from_keyboard()
-		__controllers[-1] = controller
+		__add_new_controller(controller)
+		
 		player(0).set_controller(controller)
 	
 	# Add all already connected joypads...
@@ -43,6 +45,9 @@ func _ready():
 	# ...and await future changes
 	Input.connect("joy_connection_changed", self, "_on_joy_connection_changed")
 
+func __add_new_controller(controller:Controller):
+	__controllers[controller.__device_id] = controller
+	emit_signal("new_controller_connected", controller)
 
 func __multiplex_actions():
 	for action in InputMap.get_actions():
@@ -74,26 +79,31 @@ func __multiplex_actions():
 					
 					#print("##     " , new_event)
 					InputMap.action_add_event(converted_action, new_event)
-	
+
+func __find_first_unassigned_player()->Player:
+	for player_id in range(MAX_PLAYERS):
+		var player = __players[player_id]
+		if !player.has_controller_assigned():
+			return player
+	return null
+
 func _on_joy_connection_changed(device_id:int, connected:bool):
 	# Add new Controller object if this is the first time connecting
 	if !__controllers.has(device_id):
+		# Create, init and add
 		var controller = Controller.new()
 		controller.init_from_device(device_id)
-		__controllers[device_id] = controller
+		__add_new_controller(controller)
 		
 		# Attach to first Player without controller
-		for player_id in range(MAX_PLAYERS):
-			var player = __players[player_id]
-			if !player.has_controller_assigned():
-				player.set_controller(controller)
-				break
+		var player = __find_first_unassigned_player()
+		if player: player.set_controller(controller)
 	
 	# Update connection status
 	var controller = __controllers[device_id]
 	controller.set_controller_connected(connected)
 	
-	emit_signal("num_connected_players_changed")
+	emit_signal("num_assigned_players_changed", get_num_assigned_players())
 	
 	# Debug print
 	if connected:
@@ -101,14 +111,14 @@ func _on_joy_connection_changed(device_id:int, connected:bool):
 	else:
 		print("[CONTROLLER DISCONNECTED] ", device_id, " ", controller.get_name())
 
-func get_num_connected_players()->int:
+func get_num_assigned_players()->int:
 	var num = 0
 	for player in __players:
 		if player.is_controller_connected():
 			num += 1
 	return num
 	
-func player(player_id):
+func player(player_id)->Player:
 	if player_id >= 0 and player_id < __players.size():
 		return __players[player_id]
 	else:

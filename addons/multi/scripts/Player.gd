@@ -1,16 +1,16 @@
-extends Node
+extends Object
+class_name Player
 
+var __controller:Controller = null
+var __player_id:int = -1
 
-var __controller = null
-var __player_id = null
-
-func _init(player_id):
+func _init(player_id:int):
 	__player_id = player_id
 	
 func __convert_action(action:String)->String:
-	return "player_" + str(__player_id) + "_" + action
+	return "player_%d_%s" % [__player_id, action]
 	
-func set_controller(controller)->void:
+func set_controller(controller:Controller)->void:
 	__controller = controller
 	
 	for action in InputMap.get_actions():

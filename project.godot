@@ -8,9 +8,20 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Object",
+"class": "Controller",
+"language": "GDScript",
+"path": "res://addons/multi/scripts/Controller.gd"
+}, {
+"base": "Object",
+"class": "Player",
+"language": "GDScript",
+"path": "res://addons/multi/scripts/Player.gd"
+} ]
 _global_script_class_icons={
-
+"Controller": "",
+"Player": ""
 }
 
 [application]

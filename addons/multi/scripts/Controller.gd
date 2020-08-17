@@ -1,4 +1,5 @@
-extends Node
+extends Object
+class_name Controller
 
 var __type:int = 0
 var __device_id:int = 0
@@ -7,7 +8,7 @@ var __connected:bool = false
 const CONTROLLER_TYPE_KEYBOARD = 1
 const CONTROLLER_TYPE_JOYPAD = 2
 
-func init_from_device(device_id)->void:
+func init_from_device(device_id:int)->void:
 	__device_id = device_id
 	__type = CONTROLLER_TYPE_JOYPAD
 	__connected = true
