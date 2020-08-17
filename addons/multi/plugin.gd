@@ -18,6 +18,16 @@ var custom_types = {
 		"script" : load(CUSTOM_TYPES_PATH + "PlayerConstraintButton.gd"),
 		"icon": get_editor_interface().get_base_control().get_icon("Button", "EditorIcons")
 	},
+	"PlayerStatus": {
+		"base" : "Control",
+		"script" : load(CUSTOM_TYPES_PATH + "PlayerStatus.gd"),
+		"icon": get_editor_interface().get_base_control().get_icon("Control", "EditorIcons")
+	},
+	"MultiPlayerStatus": {
+		"base" : "HBoxContainer",
+		"script" : load(CUSTOM_TYPES_PATH + "MultiPlayerStatus.gd"),
+		"icon": get_editor_interface().get_base_control().get_icon("HBoxContainer", "EditorIcons")
+	},
 }
 
 

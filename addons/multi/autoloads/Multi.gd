@@ -15,9 +15,6 @@ signal num_assigned_players_changed(num)
 
 
 func _ready():
-	if Engine.editor_hint:
-		return
-		
 	# Create Player objects
 	for i in range(MAX_PLAYERS):
 		var player = Player.new(i)

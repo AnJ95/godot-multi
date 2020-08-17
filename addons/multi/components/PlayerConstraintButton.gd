@@ -6,7 +6,7 @@ export(int) var players_max:int = 4 setget _set_players_max
 
 export var icon_active = preload("res://addons/multi/assets/icons/player.png") setget _set_icon_active
 export var icon_optional = preload("res://addons/multi/assets/icons/player_semiactive.png") setget _set_icon_optional
-export var icon_inactive = preload("res://addons/multi/assets/icons/player_inactive.png") setget _set_icon_inactive
+export var icon_inactive:StreamTexture = null setget _set_icon_inactive
 
 
 #############################################################
@@ -30,9 +30,13 @@ func recreate():
 	var image:Image = Image.new()
 	image.create(w*Multi.MAX_PLAYERS, h, false, Image.FORMAT_RGBA8)
 	
-	for p in range(players_max):
-		var icon = icon_active if p + 1 <= players_min else icon_optional
-		image.blit_rect(icon.get_data(), Rect2(0, 0, w, h), Vector2(p*w, 0))
+	for p in range(Multi.MAX_PLAYERS):
+		var icon = icon_inactive
+		if p + 1 <= players_max: icon = icon_optional
+		if p + 1 <= players_min: icon = icon_active
+		
+		if icon:
+			image.blit_rect(icon.get_data(), Rect2(0, 0, w, h), Vector2(p*w, 0))
 	
 	# convert Image to ImageTexture
 	var texture:ImageTexture = ImageTexture.new()
