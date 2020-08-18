@@ -23,21 +23,39 @@ onready var style_focus = get_stylebox("focus")
 
 func _ready():
 	_set_is_focused(is_initially_focused)
+	enabled_focus_mode = Control.FOCUS_NONE
 	
 func _process(_delta):
 	# only do this when focussed
 	if !is_focused:
 		return
-
+	
+	if player.is_action_just_pressed("ui_accept") or player.is_action_just_pressed("ui_select"):
+		var ev = __get_fake_click_event()
+		ev.pressed = true
+		Input.parse_input_event(ev)
+		
+	if player.is_action_just_released("ui_accept") or player.is_action_just_released("ui_select"):
+		var ev_click = __get_fake_click_event()
+		ev_click.pressed = false
+		
+		# a little hacky, but the motion is required if the mouse has moved
+		# since button_down
+		var ev_motion = InputEventMouseMotion.new()
+		ev_motion.position = ev_click.position
+		
+		Input.parse_input_event(ev_motion)
+		Input.parse_input_event(ev_click)
+		
+		
 	for action in action_to_neighbour_map.keys():
 		if player.is_action_just_pressed(action):
-			if player_id == 0:
-				print(player.__convert_action(action))
 			var neighbour:Control = call(action_to_neighbour_map[action])
 			if neighbour:
-				print(action_to_neighbour_map[action], " ", neighbour)
 				_set_is_focused(false)
 				neighbour.call_deferred("_set_is_focused", true)
+				
+	
 
 func _set_is_focused(v):
 	is_focused = v
@@ -45,6 +63,12 @@ func _set_is_focused(v):
 
 #############################################################
 # HELPERS
+func __get_fake_click_event()->InputEventMouseButton:
+	var ev = InputEventMouseButton.new()
+	ev.button_index = BUTTON_LEFT
+	ev.position = get_global_rect().position + 0.5 * get_global_rect().size
+	return ev
+	
 func __get_valid_focus_target_from_node_path_or_null(path:NodePath):
 	if path:
 		var n:Node = get_node(path);
