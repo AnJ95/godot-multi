@@ -8,6 +8,11 @@ var __player_id:int = -1
 
 func _init(player_id:int):
 	__player_id = player_id
+	connect("controller_connection_changed", self, "_on_controller_connection_changed")
+	
+func _on_controller_connection_changed():
+	if is_controller_disconnected():
+		Multi.emit_signal("num_assigned_players_changed", Multi.get_num_assigned_players())
 	
 func __convert_action(action:String)->String:
 	return "player_%d_%s" % [__player_id, action]
@@ -23,6 +28,9 @@ func has_controller_assigned():
 
 func is_controller_connected()->bool:
 	return has_controller_assigned() and __controller.is_controller_connected()
+
+func is_controller_disconnected()->bool:
+	return has_controller_assigned() and !__controller.is_controller_connected()
 
 func is_action_pressed(action:String)->bool:			return Input.is_action_pressed(__convert_action(action))
 func is_action_just_pressed(action:String)->bool:	return Input.is_action_just_pressed(__convert_action(action))

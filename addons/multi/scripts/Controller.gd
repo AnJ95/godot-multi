@@ -1,6 +1,8 @@
 extends Object
 class_name Controller
 
+signal connection_changed()
+
 var __type:int = 0
 var __device_id:int = 0
 var __connected:bool = false
@@ -33,7 +35,10 @@ func create_join_action():
 			InputMap.action_add_event(action, ev)
 		CONTROLLER_TYPE_JOYPAD:
 			var ev = InputEventJoypadButton.new()
-			ev.button_index = Input.JOY_SONY_X
+			ev.button_index = JOY_SONY_X
+			ev.pressed = true
+			ev.pressure = 1
+			ev.device = __device_id
 			InputMap.action_add_event(action, ev)
 		_:
 			printerr("Invalid controller type. Was the controller initialized?")
@@ -77,3 +82,9 @@ func is_controller_connected()->bool:
 	
 func set_controller_connected(connected:bool):
 	__connected = connected
+	
+	emit_signal("connection_changed")
+	
+	# Debug print
+	if connected:	print("[CONTROLLER CONNECTED] ", __device_id, " ", get_name())
+	else:			print("[CONTROLLER DISCONNECTED] ", __device_id, " ", get_name())

@@ -46,12 +46,19 @@ func _ready():
 	Input.connect("joy_connection_changed", self, "_on_joy_connection_changed")
 
 func _process(_delta):
+	# Find first unassigned player or return if already at max
+	var player = __find_first_unassigned_player()
+	if !player: return
+	
+	# check if any of the non-assigned controllers want to assign
 	for controller in __controllers.values():
 		if Input.is_action_just_pressed(controller.get_join_action()):
-			var player = __find_first_unassigned_player()
-			if player:
-				player.set_controller(controller, __input_map)
-				controller.remove_join_action()
+			__assign_controller_to_player(controller, player)
+
+func __assign_controller_to_player(controller, player):
+	player.set_controller(controller, __input_map)
+	controller.remove_join_action()
+	emit_signal("num_assigned_players_changed", get_num_assigned_players())
 
 func __add_new_controller(controller:Controller):
 	__controllers[controller.__device_id] = controller
@@ -85,22 +92,10 @@ func _on_joy_connection_changed(device_id:int, connected:bool):
 		var controller = Controller.new()
 		controller.init_from_device(device_id)
 		__add_new_controller(controller)
-		
-		# Attach to first Player without controller
-		var player = __find_first_unassigned_player()
-		if player: player.set_controller(controller, __input_map)
 	
 	# Update connection status
 	var controller = __controllers[device_id]
 	controller.set_controller_connected(connected)
-	
-	emit_signal("num_assigned_players_changed", get_num_assigned_players())
-	
-	# Debug print
-	if connected:
-		print("[CONTROLLER CONNECTED] ", device_id, " ", controller.get_name())
-	else:
-		print("[CONTROLLER DISCONNECTED] ", device_id, " ", controller.get_name())
 
 func get_num_assigned_players()->int:
 	var num = 0
