@@ -4,7 +4,7 @@ extends Node
 const ALLOW_ONE_KEYBOARD_PLAYER = true
 const AUTO_ASSIGN_KEYBOARD_TO_PLAYER_ONE = false
 
-const EXCLUDE_ACTIONS:String = "^ui_"
+const EXCLUDE_ACTIONS_FROM_DELETION:String = "^ui_"
 
 const MAX_PLAYERS = 4
 
@@ -84,15 +84,15 @@ func __preprocess_input_map():
 	InputMap.load_from_globals()
 	
 	var regex = RegEx.new()
-	regex.compile(EXCLUDE_ACTIONS)
+	regex.compile(EXCLUDE_ACTIONS_FROM_DELETION)
 	
 	for action in InputMap.get_actions():
-		if regex.search(action):
-			continue
 		__input_map[action] = []
 		for event in InputMap.get_action_list(action):
 			__input_map[action].append(event)
-		InputMap.erase_action(action)
+			
+		if !regex.search(action):
+			InputMap.erase_action(action)
 
 func __find_first_unassigned_player()->Player:
 	for player_id in range(MAX_PLAYERS):
