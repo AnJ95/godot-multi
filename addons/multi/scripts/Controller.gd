@@ -34,12 +34,13 @@ func create_join_action():
 			ev.scancode = OS.find_scancode_from_string("Space")
 			InputMap.action_add_event(action, ev)
 		CONTROLLER_TYPE_JOYPAD:
-			var ev = InputEventJoypadButton.new()
-			ev.button_index = JOY_SONY_X
-			ev.pressed = true
-			ev.pressure = 1
-			ev.device = __device_id
-			InputMap.action_add_event(action, ev)
+			for button_index in [JOY_XBOX_A, JOY_XBOX_B, JOY_XBOX_X, JOY_XBOX_Y, JOY_START, JOY_SELECT]:
+				var ev = InputEventJoypadButton.new()
+				ev.button_index = button_index
+				ev.pressed = true
+				ev.pressure = 1
+				ev.device = __device_id
+				InputMap.action_add_event(action, ev)
 		_:
 			printerr("Invalid controller type. Was the controller initialized?")
 
@@ -77,6 +78,10 @@ func get_name()->String:
 		_:
 			return "INVALID CONTROLLER TYPE"
 
+func vibrate(weak_magnitude, strong_magnitude, duration):
+	if is_controller_connected():
+		Input.start_joy_vibration(__device_id, weak_magnitude, strong_magnitude, duration)
+		
 func is_controller_connected()->bool:
 	return __connected
 	
@@ -86,5 +91,8 @@ func set_controller_connected(connected:bool):
 	emit_signal("connection_changed")
 	
 	# Debug print
-	if connected:	print("[CONTROLLER CONNECTED] ", __device_id, " ", get_name())
-	else:			print("[CONTROLLER DISCONNECTED] ", __device_id, " ", get_name())
+	print("[CONTROLLER %s] %d: %s, known: %s" % [
+		"CONNECTED" if connected else "DISCONNECTED",
+		__device_id, get_name(),
+		"yes" if __type == CONTROLLER_TYPE_KEYBOARD or Input.is_joy_known(__device_id) else "no"
+	])

@@ -25,6 +25,10 @@ func _ready():
 	for i in range(MAX_PLAYERS):
 		var player = Player.new(i)
 		__players.append(player)
+	
+	# Don't add controllers in editor
+	if Engine.editor_hint:
+		return
 		
 	# Saves and removes InputMap
 	__preprocess_input_map()
@@ -34,6 +38,7 @@ func _ready():
 		var controller = Controller.new()
 		controller.init_from_keyboard()
 		__add_new_controller(controller)
+		controller.set_controller_connected(true)
 		
 		if AUTO_ASSIGN_KEYBOARD_TO_PLAYER_ONE:
 			player(0).set_controller(controller, __input_map)
@@ -46,6 +51,17 @@ func _ready():
 	Input.connect("joy_connection_changed", self, "_on_joy_connection_changed")
 
 func _process(_delta):
+	# Don't join in editor
+	if Engine.editor_hint:
+		return
+	
+#	debug print buttons
+#	if __controllers.has(0):
+#		var c = __controllers[0]
+#		for i in range(20):
+#			if Input.is_joy_button_pressed(0, i):
+#				print(Input.get_joy_button_string(i), " ", i)
+	
 	# Find first unassigned player or return if already at max
 	var player = __find_first_unassigned_player()
 	if !player: return
