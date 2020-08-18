@@ -1,3 +1,4 @@
+tool
 extends Button
 
 export var player_id = 0
@@ -17,14 +18,22 @@ var action_to_neighbour_map = {
 
 onready var is_focused:bool setget _set_is_focused
 
-onready var focus_node = $Focus
-onready var style_empty = focus_node.get_stylebox("Panel")
+var focus_node:Panel
+onready var style_empty = StyleBoxEmpty.new()
 onready var style_focus = get_stylebox("focus")
 
 func _ready():
 	_set_is_focused(is_initially_focused)
 	enabled_focus_mode = Control.FOCUS_NONE
 	
+func check_focus_node():
+	if !focus_node:
+		focus_node = Panel.new()
+		focus_node.anchor_bottom = 1
+		focus_node.anchor_right = 1
+		focus_node.mouse_filter = MOUSE_FILTER_IGNORE
+		add_child(focus_node)
+		
 func _process(_delta):
 	# only do this when focussed
 	if !is_focused:
@@ -58,6 +67,7 @@ func _process(_delta):
 	
 
 func _set_is_focused(v):
+	check_focus_node()
 	is_focused = v
 	focus_node.add_stylebox_override("panel", style_focus if v else style_empty)
 
