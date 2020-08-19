@@ -45,20 +45,12 @@ func _unhandled_input(event:InputEvent):
 	if player.is_event_action_just_pressed(event, "ui_accept") or player.is_event_action_just_pressed(event, "ui_select"):
 		var ev = __get_fake_click_event()
 		ev.pressed = true
-		Input.parse_input_event(ev)
+		_gui_input(ev)
 		
 	if player.is_event_action_just_released(event, "ui_accept") or player.is_event_action_just_released(event, "ui_select"):
 		var ev_click = __get_fake_click_event()
 		ev_click.pressed = false
-		
-		# a little hacky, but the motion is required if the mouse has moved
-		# since button_down
-		var ev_motion = InputEventMouseMotion.new()
-		ev_motion.position = ev_click.position
-		
-		Input.parse_input_event(ev_motion)
-		Input.parse_input_event(ev_click)
-		
+		_gui_input(ev_click)
 		
 	for action in action_to_neighbour_map.keys():
 		if player.is_event_action_just_pressed(event, action):
@@ -66,7 +58,9 @@ func _unhandled_input(event:InputEvent):
 			if neighbour:
 				_set_is_focused(false)
 				neighbour.call_deferred("_set_is_focused", true)
-	
+
+func _draw():
+	pass
 
 func _set_is_focused(v):
 	check_focus_node()
