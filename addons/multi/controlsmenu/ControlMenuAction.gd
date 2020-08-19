@@ -15,6 +15,8 @@ func init(player_id:int, action:String):
 	self.player_id = player_id
 	self.action = action
 	
+	$VBoxContainer/HBoxContainer/ButtonAdd.player_id = player_id
+	
 	player = Multi.player(player_id)
 	
 func _ready():

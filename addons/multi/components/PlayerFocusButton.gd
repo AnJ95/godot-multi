@@ -66,6 +66,10 @@ func _set_is_focused(v):
 	check_focus_node()
 	is_focused = v
 	focus_node.add_stylebox_override("panel", style_focus if v else style_empty)
+	emit_signal("focus_entered" if is_focused else "focus_exited")
+	
+	if is_focused:
+		get_viewport().emit_signal("gui_focus_changed", self)
 
 #############################################################
 # HELPERS
@@ -157,6 +161,7 @@ func find_focus_direction(dir:Vector2)->Control:
 	for other in get_tree().get_nodes_in_group("PlayerFocusButton"):
 		if other == self:
 			continue
+		
 		if other.player_id != player_id:
 			continue
 		

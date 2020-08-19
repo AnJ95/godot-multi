@@ -32,7 +32,6 @@ margin_right = 959.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
-text = "Jump"
 align = 1
 valign = 1
 
@@ -41,6 +40,7 @@ margin_left = 963.0
 margin_right = 1010.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 47, 0 )
+focus_mode = 0
 text = "+"
 script = ExtResource( 2 )
 
