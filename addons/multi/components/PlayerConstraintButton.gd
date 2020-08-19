@@ -15,9 +15,6 @@ func _ready():
 	expand_icon = true
 	recreate()
 	
-	# TODO not saved in inspector for some reason
-	focus_mode = Control.FOCUS_NONE
-	
 	# Await changes but trigger handler initially
 	Multi.connect("num_assigned_players_changed", self, "_on_num_assigned_players_changed")
 	_on_num_assigned_players_changed(Multi.get_num_assigned_players())

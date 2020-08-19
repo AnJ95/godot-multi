@@ -24,7 +24,9 @@ onready var style_focus = get_stylebox("focus")
 
 func _ready():
 	_set_is_focused(is_initially_focused)
-	enabled_focus_mode = Control.FOCUS_NONE
+	focus_mode = Control.FOCUS_NONE
+	
+	add_to_group("PlayerFocusButton")
 	
 func check_focus_node():
 	if !focus_node:
@@ -36,31 +38,29 @@ func check_focus_node():
 		
 func _unhandled_input(event:InputEvent):
 	# only do this when focussed
-	if !is_focused:
-		return
+	if !is_focused: return
+	# invalid id
+	if !player: return
 	
-	if !player:
-		return
-	
+	# fake mouse_down 
 	if player.is_event_action_just_pressed(event, "ui_accept") or player.is_event_action_just_pressed(event, "ui_select"):
 		var ev = __get_fake_click_event()
 		ev.pressed = true
 		_gui_input(ev)
-		
+	# fake mouse_up
 	if player.is_event_action_just_released(event, "ui_accept") or player.is_event_action_just_released(event, "ui_select"):
 		var ev_click = __get_fake_click_event()
 		ev_click.pressed = false
 		_gui_input(ev_click)
-		
+	
+	# focus
 	for action in action_to_neighbour_map.keys():
 		if player.is_event_action_just_pressed(event, action):
 			var neighbour:Control = call(action_to_neighbour_map[action])
 			if neighbour:
 				_set_is_focused(false)
 				neighbour.call_deferred("_set_is_focused", true)
-
-func _draw():
-	pass
+				break
 
 func _set_is_focused(v):
 	check_focus_node()
@@ -88,82 +88,101 @@ func __get_valid_focus_target_from_node_path_or_null(path:NodePath):
 	return null
 	
 func __is_valid_focus_target(n:Node)->bool:
-	return n and n is Button and n.visible and n.has_method("__is_playerFocusButton") and n.player_id == player_id
-
-func __is_playerFocusButton()->bool: return true
+	return n.is_in_group("PlayerFocusButton") and n.visible and n.player_id == player_id
 
 #############################################################
-# Finding neighbouring PlayerFocusButtons
+# FOCUS
 func find_focus_left()->Control:
 	# If the focus property is manually overwritten, attempt to use it.
 	var manual = __get_valid_focus_target_from_node_path_or_null(focus_neighbour_left)
 	if manual: return manual
 	
-	# Otherwise just get prev
-	return find_focus_prev()
+	return find_focus_direction(Vector2.LEFT)
 
 func find_focus_right()->Control:
 	# If the focus property is manually overwritten, attempt to use it.
 	var manual = __get_valid_focus_target_from_node_path_or_null(focus_neighbour_right)
 	if manual: return manual
 	
-	# Otherwise just get prev
-	return find_focus_next()
+	return find_focus_direction(Vector2.RIGHT)
 	
 func find_focus_top()->Control:
 	# If the focus property is manually overwritten, attempt to use it.
 	var manual = __get_valid_focus_target_from_node_path_or_null(focus_neighbour_top)
 	if manual: return manual
 	
-	# Otherwise just get prev
-	return find_focus_prev()
-
+	return find_focus_direction(Vector2.UP)
+	
 func find_focus_bottom()->Control:
 	# If the focus property is manually overwritten, attempt to use it.
 	var manual = __get_valid_focus_target_from_node_path_or_null(focus_neighbour_bottom)
 	if manual: return manual
 	
-	# Otherwise just get prev
-	return find_focus_next()
-	
+	return find_focus_direction(Vector2.DOWN)
+
 func find_focus_prev()->Control:
 	# If the focus property is manually overwritten, attempt to use it.
 	var manual = __get_valid_focus_target_from_node_path_or_null(focus_previous)
 	if manual: return manual
 	
-	var from:Node = self
-	var parent:Node = from.get_parent()
+	# Look for left first, then up
+	var next = find_focus_direction(Vector2.LEFT)
+	if next: return next
 	
-	# Iterate tree upwards until something found or reached root
-	while parent:
-		# Check direct siblings
-		for i in range(from.get_index()-1, -1, -1):
-			var child_n:Node = parent.get_child(i)
-			if __is_valid_focus_target(child_n):
-				var child_c:Control = child_n
-				return child_c
-				
-		from = parent
-		parent = from.get_parent()
-	return null
+	return find_focus_direction(Vector2.UP)
 	
 func find_focus_next()->Control:
 	# If the focus property is manually overwritten, attempt to use it.
 	var manual = __get_valid_focus_target_from_node_path_or_null(focus_next)
 	if manual: return manual
 	
-	var from:Node = self
-	var parent:Node = from.get_parent()
+	# Look for right first, then down
+	var next = find_focus_direction(Vector2.RIGHT)
+	if next: return next
 	
-	# Iterate tree upwards until something found or reached root
-	while parent:
-		# Check direct siblings
-		for i in range(from.get_index()+1, parent.get_child_count()):
-			var child_n:Node = parent.get_child(i)
-			if __is_valid_focus_target(child_n):
-				var child_c:Control = child_n
-				return child_c
-				
-		from = parent
-		parent = from.get_parent()
-	return null
+	return find_focus_direction(Vector2.DOWN)
+
+# The position used for finding other focus elements
+func get_focus_pos()->Vector2:
+	return get_global_rect().position + 0.5 * get_global_rect().size
+
+func find_focus_direction(dir:Vector2)->Control:
+	var best_fits = []
+	var best_dst = -1
+	
+	var pos_a:Vector2 = get_focus_pos()
+	
+	# STEP 1:
+	# Find Btn with smallest dst in dir
+	for other in get_tree().get_nodes_in_group("PlayerFocusButton"):
+		if other == self:
+			continue
+		if other.player_id != player_id:
+			continue
+		
+		var pos_b:Vector2 = other.get_focus_pos()
+		var dst = (dir.y * pos_b.y - dir.y * pos_a.y) + (dir.x * pos_b.x - dir.x * pos_a.x)
+		if dst <= 0:
+			continue
+		
+		# if found better (or first iteration:
+		if dst < best_dst or best_fits.size() == 0:
+			best_fits = [other]
+			best_dst = dst
+		# if they hay the same distance:
+		elif dst == best_dst:
+			best_fits.append(other)
+	
+	# STEP 2:
+	# If there are multiple possibilities, take the one
+	# with the lowest distance in perpendicular direction
+	var best_fit = null
+	for other in best_fits:
+		var pos_b:Vector2 = other.get_focus_pos()
+		var dst = abs(abs(dir.y) * (pos_b.x - pos_a.x) + abs(dir.x) * (pos_b.y - pos_a.y))
+		if best_fit == null or dst < best_dst:
+			best_fit = other
+			best_dst = dst
+			
+	return best_fit
+
