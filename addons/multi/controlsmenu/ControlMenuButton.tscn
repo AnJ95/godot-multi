@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/multi/components/PlayerFocusButton.gd" type="Script" id=1]
+[ext_resource path="res://addons/multi/controlsmenu/ControlMenuButton.gd" type="Script" id=2]
+
+[node name="ControlMenuButton" type="HBoxContainer" groups=[
+"ControlMenuButton",
+]]
+anchor_right = 1.0
+size_flags_horizontal = 3
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="."]
+margin_right = 973.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+toggle_mode = true
+text = "<Unassigned>"
+script = ExtResource( 1 )
+
+[node name="ButtonRemove" type="Button" parent="."]
+margin_left = 977.0
+margin_right = 1024.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 47, 0 )
+text = "x"
+script = ExtResource( 1 )
+[connection signal="toggled" from="Button" to="." method="_on_Button_toggled"]

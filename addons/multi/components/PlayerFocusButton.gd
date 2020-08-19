@@ -12,7 +12,7 @@ var action_to_neighbour_map = {
 	"ui_up" : "find_focus_top",
 	"ui_down" : "find_focus_bottom",
 	"ui_focus_next" : "find_focus_next",
-	"ui_focus_previous" : "find_focus_prev"
+	"ui_focus_prev" : "find_focus_prev"
 }
 
 
@@ -34,17 +34,20 @@ func check_focus_node():
 		focus_node.mouse_filter = MOUSE_FILTER_IGNORE
 		add_child(focus_node)
 		
-func _process(_delta):
+func _unhandled_input(event:InputEvent):
 	# only do this when focussed
 	if !is_focused:
 		return
 	
-	if player.is_action_just_pressed("ui_accept") or player.is_action_just_pressed("ui_select"):
+	if !player:
+		return
+	
+	if player.is_event_action_just_pressed(event, "ui_accept") or player.is_event_action_just_pressed(event, "ui_select"):
 		var ev = __get_fake_click_event()
 		ev.pressed = true
 		Input.parse_input_event(ev)
 		
-	if player.is_action_just_released("ui_accept") or player.is_action_just_released("ui_select"):
+	if player.is_event_action_just_released(event, "ui_accept") or player.is_event_action_just_released(event, "ui_select"):
 		var ev_click = __get_fake_click_event()
 		ev_click.pressed = false
 		
@@ -58,12 +61,11 @@ func _process(_delta):
 		
 		
 	for action in action_to_neighbour_map.keys():
-		if player.is_action_just_pressed(action):
+		if player.is_event_action_just_pressed(event, action):
 			var neighbour:Control = call(action_to_neighbour_map[action])
 			if neighbour:
 				_set_is_focused(false)
 				neighbour.call_deferred("_set_is_focused", true)
-				
 	
 
 func _set_is_focused(v):

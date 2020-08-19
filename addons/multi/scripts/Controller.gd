@@ -81,7 +81,15 @@ func get_name()->String:
 func vibrate(weak_magnitude, strong_magnitude, duration):
 	if is_controller_connected():
 		Input.start_joy_vibration(__device_id, weak_magnitude, strong_magnitude, duration)
-		
+
+func is_event_from_this_controller(event:InputEvent)->bool:
+	match __type:
+		CONTROLLER_TYPE_JOYPAD:
+			return (event is InputEventJoypadButton or event is InputEventJoypadMotion) and event.device == __device_id
+		CONTROLLER_TYPE_KEYBOARD:
+			return (event is InputEventMouseButton or event is InputEventKey)
+	return false
+	
 func is_controller_connected()->bool:
 	return __connected
 	

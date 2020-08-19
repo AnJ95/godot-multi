@@ -41,7 +41,22 @@ func is_controller_disconnected()->bool:
 func vibrate(weak_magnitude, strong_magnitude, duration):
 	if is_controller_connected():
 		__controller.vibrate(weak_magnitude, strong_magnitude, duration)
-		
+
+func is_event_from_this_player(event:InputEvent)->bool:
+	return is_controller_connected() and __controller.is_event_from_this_controller(event)
+
+func is_event_action(event:InputEvent, action:String)->bool:
+	return is_controller_connected() and event.is_action(__convert_action(action))
+
+func is_event_action_just_pressed(event:InputEvent, action:String)->bool:
+	return is_controller_connected() and event.is_action_pressed(__convert_action(action))
+
+func is_event_action_just_released(event:InputEvent, action:String)->bool:
+	return is_controller_connected() and event.is_action_released(__convert_action(action))
+	
+func get_action_list(action:String)->Array:
+	return InputMap.get_action_list(__convert_action(action))
+	
 func is_action_pressed(action:String)->bool:			return Input.is_action_pressed(__convert_action(action))
 func is_action_just_pressed(action:String)->bool:	return Input.is_action_just_pressed(__convert_action(action))
 func is_action_just_released(action:String)->bool:	return Input.is_action_just_released(__convert_action(action))

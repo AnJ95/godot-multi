@@ -8,6 +8,32 @@ const EXCLUDE_ACTIONS_FROM_DELETION:String = "^ui_"
 
 const MAX_PLAYERS = 4
 
+const PRETTY_ACTION_NAMES = {
+	"left" : "Left",
+	"right" : "Right",
+	"up" : "Up",
+	"down" : "Down",
+}
+
+const PREFFERED_ACTION_ORDER = [
+	"left",
+	"right",
+	"up",
+	"down",
+]
+
+const MOUSE_BUTTON_STRINGS = {
+	BUTTON_LEFT : "Mouse Left",
+	BUTTON_RIGHT : "Mouse Right",
+	BUTTON_MIDDLE : "Mouse Middle",
+	BUTTON_XBUTTON1 : "Mouse X1",
+	BUTTON_XBUTTON2 : "Mouse X2",
+	BUTTON_WHEEL_UP : "Mouse Wheel Up",
+	BUTTON_WHEEL_DOWN : "Mouse Wheel Down",
+	BUTTON_WHEEL_LEFT : "Mouse Wheel Left",
+	BUTTON_WHEEL_RIGHT : "Mouse Wheel Right"
+}
+
 var __controllers = {}
 var __players = []
 
@@ -113,6 +139,21 @@ func _on_joy_connection_changed(device_id:int, connected:bool):
 	var controller = __controllers[device_id]
 	controller.set_controller_connected(connected)
 
+
+func get_pretty_string(event:InputEvent)->String:
+	if event is InputEventJoypadButton:
+		return Input.get_joy_button_string(event.button_index)
+	elif event is InputEventKey:
+		return OS.get_scancode_string(event.scancode)
+	elif event is InputEventJoypadMotion:
+		var pretty:String = Input.get_joy_axis_string(event.axis)
+		pretty = pretty.replace("X", "Right" if event.axis_value > 0 else "Left")
+		pretty = pretty.replace("Y", "Down" if event.axis_value > 0 else "Up")
+		return pretty
+	elif event is InputEventMouseButton:
+		return MOUSE_BUTTON_STRINGS[int(event.button_index)] if MOUSE_BUTTON_STRINGS.has(int(event.button_index)) else ""
+	return "Invalid"
+	
 func get_num_assigned_players()->int:
 	var num = 0
 	for player in __players:
