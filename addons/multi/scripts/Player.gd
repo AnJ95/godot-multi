@@ -20,7 +20,7 @@ func _on_controller_connection_changed():
 	vibrate(ASSIGN_VIBRATE_WEAK, ASSIGN_VIBRATE_STRONG, ASSIGN_VIBRATE_DURATION)
 	
 func __convert_action(action:String)->String:
-	return "player_%d_%s" % [__player_id, action]
+	return "p_%d_%s" % [__player_id, action]
 	
 func set_controller(controller:Controller, input_map)->void:
 	# Debug print

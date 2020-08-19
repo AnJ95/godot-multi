@@ -43,12 +43,12 @@ func _unhandled_input(event:InputEvent):
 	if !player: return
 	
 	# fake mouse_down 
-	if player.is_event_action_just_pressed(event, "ui_accept") or player.is_event_action_just_pressed(event, "ui_select"):
+	if player.is_event_action_just_pressed(event, "ui_accept"):
 		var ev = __get_fake_click_event()
 		ev.pressed = true
 		_gui_input(ev)
 	# fake mouse_up
-	if player.is_event_action_just_released(event, "ui_accept") or player.is_event_action_just_released(event, "ui_select"):
+	if player.is_event_action_just_released(event, "ui_accept"):
 		var ev_click = __get_fake_click_event()
 		ev_click.pressed = false
 		_gui_input(ev_click)

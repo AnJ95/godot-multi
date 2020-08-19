@@ -3,7 +3,7 @@ extends ScrollContainer
 
 const ControlMenuAction = preload("ControlMenuAction.tscn")
 
-export(String) var filter_actions:String = "^ui_"
+export(String) var filter_actions:String = "^(ui_home)|(ui_end)|(ui_select)|(ui_page_up)|(ui_page_down)|(ui_focus_prev)|(ui_focus_next)"
 
 var player_id:int = 0
 

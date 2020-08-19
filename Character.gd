@@ -15,8 +15,8 @@ func _ready():
 
 func _physics_process(_delta):
 	# use functions you are familiar with
-	velocity.x = SPEED * (player.get_action_strength("right") - player.get_action_strength("left"))
-	velocity.y = SPEED * (player.get_action_strength("down") - player.get_action_strength("up"))
+	velocity.x = SPEED * (player.get_action_strength("ui_right") - player.get_action_strength("ui_left"))
+	velocity.y = SPEED * (player.get_action_strength("ui_down") - player.get_action_strength("ui_up"))
 	
 	velocity = move_and_slide(velocity, Vector2.UP)
 

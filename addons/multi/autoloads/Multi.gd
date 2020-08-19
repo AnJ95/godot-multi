@@ -4,22 +4,29 @@ extends Node
 const ALLOW_ONE_KEYBOARD_PLAYER = true
 const AUTO_ASSIGN_KEYBOARD_TO_PLAYER_ONE = false
 
-const EXCLUDE_ACTIONS_FROM_DELETION:String = "^ui_"
+# Internally, every action like "jump" is duplicated to "p_0_jump", "p_1_jump", ...
+# and the original "jump" is deleted.
+# Add any action to the regex if you don't want it do be deleted.
+const EXCLUDE_ACTIONS_FROM_DELETION:String = "^(ui_)"
 
 const MAX_PLAYERS = 4
 
 const PRETTY_ACTION_NAMES = {
-	"left" : "Left",
-	"right" : "Right",
-	"up" : "Up",
-	"down" : "Down",
+	"ui_accept" : "Accept",
+	"ui_cancel" : "Cancel",
+	"ui_left" : "Left",
+	"ui_right" : "Right",
+	"ui_up" : "Up",
+	"ui_down" : "Down"
 }
 
 const PREFFERED_ACTION_ORDER = [
-	"left",
-	"right",
-	"up",
-	"down",
+	"ui_accept",
+	"ui_cancel",
+	"ui_left",
+	"ui_right",
+	"ui_up",
+	"ui_down"
 ]
 
 const MOUSE_BUTTON_STRINGS = {
