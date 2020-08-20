@@ -43,6 +43,7 @@ focus_mode = 0
 text = "Back"
 script = ExtResource( 3 )
 allow_all_players = true
+is_triggered_by_cancel_action = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 margin_top = 500.0

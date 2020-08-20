@@ -4,6 +4,7 @@ extends Control
 export var allow_all_players = false
 export var player_id = 0
 export var is_initially_focused = false
+export var is_triggered_by_cancel_action = false
 
 var action_to_function = {
 	"ui_left" : "find_focus_left",
@@ -43,6 +44,15 @@ func _exit_tree():
 			focus._set_is_focused(true)
 		
 func _unhandled_input(event:InputEvent):
+	# cancel if any player fired ui_cancel
+	if is_triggered_by_cancel_action:
+		for p_id in range(Multi.MAX_PLAYERS):
+			var p = Multi.player(p_id)
+			if p.is_event_from_this_player(event) and p.is_event_action(event, "ui_cancel"):
+				var ev_click = __get_fake_click_event()
+				ev_click.pressed = p.is_event_action_just_pressed(event, "ui_cancel")
+				_gui_input(ev_click)
+		
 	# only do this when focussed
 	if !is_focused: return
 	
@@ -50,7 +60,7 @@ func _unhandled_input(event:InputEvent):
 	if !player: return
 	
 	# if multiple players have access to this Control:
-	# determine from whom the event
+	# determine from whom the event is
 	if allow_all_players:
 		player_id = -1
 		for p_id in player_ids_focussing:
@@ -60,7 +70,7 @@ func _unhandled_input(event:InputEvent):
 				break
 		if player_id == -1:
 			return
-	
+		
 	# fake mouse_down 
 	if player.is_event_action_just_pressed(event, "ui_accept"):
 		var ev = __get_fake_click_event()
