@@ -42,6 +42,7 @@ margin_bottom = 470.0
 focus_mode = 0
 text = "Back"
 script = ExtResource( 3 )
+allow_all_players = true
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/Controls"]
 margin_top = 500.0

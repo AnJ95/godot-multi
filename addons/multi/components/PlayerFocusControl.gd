@@ -1,10 +1,9 @@
 tool
 extends Control
 
+export var allow_all_players = false
 export var player_id = 0
 export var is_initially_focused = false
-
-onready var player = Multi.player(player_id)
 
 var action_to_function = {
 	"ui_left" : "find_focus_left",
@@ -15,6 +14,9 @@ var action_to_function = {
 	"ui_focus_prev" : "find_focus_prev"
 }
 
+var player:Player
+# only required when allow_all_players=true
+var player_ids_focussing = []
 
 onready var is_focused:bool setget _set_is_focused
 
@@ -23,6 +25,10 @@ onready var style_empty = StyleBoxEmpty.new()
 onready var style_focus = get_stylebox("focus")
 
 func _ready():
+	if allow_all_players and is_initially_focused:
+		printerr("Error, PlayerFocusControl can not allow_all_players and is_initially_focused")
+	if !allow_all_players:
+		player = Multi.player(player_id)
 	_set_is_focused(is_initially_focused)
 	focus_mode = Control.FOCUS_NONE
 	
@@ -39,8 +45,21 @@ func _exit_tree():
 func _unhandled_input(event:InputEvent):
 	# only do this when focussed
 	if !is_focused: return
+	
 	# invalid id
 	if !player: return
+	
+	# if multiple players have access to this Control:
+	# determine from whom the event
+	if allow_all_players:
+		player_id = -1
+		for p_id in player_ids_focussing:
+			if Multi.player(p_id).is_event_from_this_player(event):
+				player_id = p_id
+				player = Multi.player(p_id)
+				break
+		if player_id == -1:
+			return
 	
 	# fake mouse_down 
 	if player.is_event_action_just_pressed(event, "ui_accept"):
@@ -56,18 +75,40 @@ func _unhandled_input(event:InputEvent):
 	# focus
 	for action in action_to_function.keys():
 		if player.is_event_action_just_pressed(event, action):
-			var neighbour:Control = call(action_to_function[action])
-			if neighbour:
-				_set_is_focused(false)
-				neighbour.call_deferred("_set_is_focused", true)
+			var other:Control = call(action_to_function[action])
+			if other:
+				switch_focus_to(other)
+				accept_event()
 				break
 
-func _set_is_focused(v):
+func switch_focus_to(other:Control)->void:
+	_set_is_focused(false, player_id)
+	other._set_is_focused(true, player_id)
+
+func _set_is_focused(v, change_player_id=-1):
 	is_focused = v
-	_set_style_focused(v)
+	
+	# Extra action if potentially multiple cursors on this Control:
+	if allow_all_players:
+		# change current player_id
+		if change_player_id != -1:
+			player_id = change_player_id
+			player = Multi.player(player_id)
+		# add cursor to list
+		if v:
+			if !player_ids_focussing.has(player_id):
+				player_ids_focussing.append(player_id)
+		# remove cursor of this player but keep is_focused if another cursor still there
+		else:
+			player_ids_focussing.erase(player_id)
+			if player_ids_focussing.size() > 0:
+				is_focused = true
+	
+	_set_style_focused(is_focused)
 	emit_signal("focus_entered" if is_focused else "focus_exited")
 	
 	if is_focused:
+		# causes ScrollContainers to scroll to this Control
 		get_viewport().emit_signal("gui_focus_changed", self)
 		
 func _set_style_focused(focused:bool):
@@ -100,7 +141,7 @@ func __get_valid_focus_target_from_node_path_or_null(path:NodePath):
 	return null
 	
 func __is_valid_focus_target(n:Node)->bool:
-	return n.is_in_group("PlayerFocus") and n.visible and n.player_id == player_id
+	return n.is_in_group("PlayerFocus") and n.visible and (n.player_id == player_id or n.allow_all_players)
 
 #############################################################
 # FOCUS
