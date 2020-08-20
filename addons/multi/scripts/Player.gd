@@ -21,6 +21,9 @@ func _on_controller_connection_changed():
 	
 func __convert_action(action:String)->String:
 	return "p_%d_%s" % [__player_id, action]
+
+func get_controller()->Controller:
+	return __controller
 	
 func set_controller(controller:Controller, input_map)->void:
 	# Debug print
