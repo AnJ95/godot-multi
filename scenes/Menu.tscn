@@ -4,7 +4,7 @@
 [ext_resource path="res://addons/multi/components/PlayerConstraintButton.gd" type="Script" id=2]
 [ext_resource path="res://addons/multi/components/MultiPlayerStatus.gd" type="Script" id=3]
 [ext_resource path="res://scenes/Menu.gd" type="Script" id=4]
-[ext_resource path="res://addons/multi/components/MultiplayerBindPopup.tscn" type="PackedScene" id=5]
+[ext_resource path="res://addons/multi/components/MultiPlayerBindPopup.gd" type="Script" id=5]
 
 [sub_resource type="Image" id=7]
 data = {
@@ -147,11 +147,10 @@ margin_right = 784.0
 margin_bottom = 40.0
 script = ExtResource( 3 )
 
-[node name="MultiplayerBindPopup" parent="." instance=ExtResource( 5 )]
-margin_left = 386.986
-margin_top = 398.248
-margin_right = 434.986
-margin_bottom = 438.248
+[node name="MultiPlayerBindPopup" type="WindowDialog" parent="."]
+margin_right = 48.0
+margin_bottom = 40.0
+script = ExtResource( 5 )
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/ButtonSingleplayer" to="." method="_on_ButtonSingleplayer_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/ButtonCampaign" to="." method="_on_ButtonCampaign_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/ButtonMultiplayer" to="." method="_on_ButtonMultiplayer_pressed"]

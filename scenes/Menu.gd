@@ -3,7 +3,7 @@ extends CanvasLayer
 
 func _ready():
 	$MarginContainer/VBoxContainer/VBoxContainer/ButtonControls.grab_focus()
-	$MultiplayerBindPopup.popup_centered()
+	$MultiPlayerBindPopup.popup_centered()
 
 func _on_ButtonSingleplayer_pressed():
 	get_tree().change_scene("res://scenes/Game.tscn")

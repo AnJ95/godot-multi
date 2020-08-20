@@ -52,6 +52,11 @@ var custom_types = {
 		"base" : "OptionButton",
 		"script" : load(CUSTOM_TYPES_PATH + "PlayerFocusControl.gd"),
 		"icon": get_editor_interface().get_base_control().get_icon("OptionButton", "EditorIcons")
+	},
+	"MultiPlayerBindPopup": {
+		"base" : "WindowDialog",
+		"script" : load(CUSTOM_TYPES_PATH + "MultiPlayerBindPopup.gd"),
+		"icon": get_editor_interface().get_base_control().get_icon("WindowDialog", "EditorIcons")
 	}
 }
 
