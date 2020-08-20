@@ -38,6 +38,8 @@ const MOUSE_BUTTON_STRINGS = {
 	BUTTON_WHEEL_RIGHT : "Mouse Wheel Right"
 }
 
+const BindPopup = preload("res://addons/multi/components/MultiPlayerBindPopup.gd")
+
 var __controllers = {}
 var __players = []
 
@@ -146,6 +148,21 @@ func _on_joy_connection_changed(device_id:int, connected:bool):
 	var controller = __controllers[device_id]
 	controller.set_controller_connected(connected)
 
+func get_bind_popup_singleton()->WindowDialog:
+	var popup = get_tree().get_nodes_in_group("MultiPlayerBindPopup")
+	if popup.size() > 0:
+		popup = popup[0]
+	else:
+		popup = WindowDialog.new()
+		popup.set_script(BindPopup)
+		
+		var canvas_layer = CanvasLayer.new()
+		canvas_layer.layer = 100
+		
+		canvas_layer.add_child(popup)
+		get_tree().root.add_child(canvas_layer)
+	
+	return popup
 
 func get_pretty_string(event:InputEvent)->String:
 	if event is InputEventJoypadButton:

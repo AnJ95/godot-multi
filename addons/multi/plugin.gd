@@ -24,9 +24,9 @@ var custom_types = {
 		"icon": get_editor_interface().get_base_control().get_icon("Control", "EditorIcons")
 	},
 	"MultiPlayerStatus": {
-		"base" : "HBoxContainer",
+		"base" : "Button",
 		"script" : load(CUSTOM_TYPES_PATH + "MultiPlayerStatus.gd"),
-		"icon": get_editor_interface().get_base_control().get_icon("HBoxContainer", "EditorIcons")
+		"icon": get_editor_interface().get_base_control().get_icon("Button", "EditorIcons")
 	},
 	"MultiPlayerControlMenu": {
 		"base" : "GridContainer",

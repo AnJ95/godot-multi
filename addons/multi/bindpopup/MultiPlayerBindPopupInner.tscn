@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://addons/multi/components/MultiPlayerStatus.gd" type="Script" id=1]
 [ext_resource path="res://addons/multi/bindpopup/MultiPlayerBindPopupInner.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxEmpty" id=1]
 
 [node name="MultiPlayerBindPopupInner" type="MarginContainer"]
 margin_left = 15.0
@@ -14,41 +16,47 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_right = 250.0
-margin_bottom = 130.0
+margin_right = 172.0
+margin_bottom = 90.0
 custom_constants/separation = 15
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MultiPlayerStatus" type="HBoxContainer" parent="VBoxContainer"]
-margin_right = 250.0
-margin_bottom = 80.0
-custom_constants/separation = 30
+[node name="MultiPlayerStatus" type="Button" parent="VBoxContainer"]
+margin_right = 172.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 172, 40 )
+focus_mode = 0
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 1 )
+custom_styles/focus = SubResource( 1 )
+custom_styles/disabled = SubResource( 1 )
+custom_styles/normal = SubResource( 1 )
 script = ExtResource( 1 )
-show_controller_status = true
+open_bind_popup_on_click = false
 
 [node name="Spacer" type="Control" parent="VBoxContainer"]
-margin_top = 95.0
-margin_right = 250.0
-margin_bottom = 95.0
+margin_top = 55.0
+margin_right = 172.0
+margin_bottom = 55.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 110.0
-margin_right = 250.0
-margin_bottom = 130.0
+margin_top = 70.0
+margin_right = 172.0
+margin_bottom = 90.0
 custom_constants/separation = 15
 alignment = 1
 
 [node name="ButtonUnbind" type="Button" parent="VBoxContainer/HBoxContainer"]
-margin_left = 73.0
-margin_right = 131.0
+margin_left = 34.0
+margin_right = 92.0
 margin_bottom = 20.0
 text = "Unbind"
 
 [node name="ButtonOK" type="Button" parent="VBoxContainer/HBoxContainer"]
-margin_left = 146.0
-margin_right = 177.0
+margin_left = 107.0
+margin_right = 138.0
 margin_bottom = 20.0
 text = "OK"
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/ButtonUnbind" to="." method="_on_ButtonUnbind_pressed"]

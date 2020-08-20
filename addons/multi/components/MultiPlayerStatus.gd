@@ -1,7 +1,9 @@
 tool
-extends HBoxContainer
+extends Button
 
 export var show_controller_status = false setget _set_show_controller_status
+
+export var open_bind_popup_on_click = true
 
 export var icon_player_connected = preload("res://addons/multi/assets/icons/player.png") setget _set_icon_player_connected
 export var icon_player_disconnected = preload("res://addons/multi/assets/icons/player_inactive.png") setget _set_icon_player_disconnected
@@ -11,18 +13,40 @@ export var icon_assign_controller = preload("res://addons/multi/assets/icons/bub
 export var icon_joypad = preload("res://addons/multi/assets/icons/joypad.png") setget _set_icon_joypad
 export var icon_keyboard = preload("res://addons/multi/assets/icons/keyboard.png") setget _set_icon_keyboard
 
+
 const PlayerStatus = preload("PlayerStatus.gd")
 
+var hbox
+
 func _ready():
+	# set button props
+	var style:StyleBox = StyleBoxEmpty.new()
+	add_stylebox_override("hover", style)
+	add_stylebox_override("pressed", style)
+	add_stylebox_override("focus", style)
+	add_stylebox_override("disabled", style)
+	add_stylebox_override("normal", style)
+	focus_mode = Control.FOCUS_NONE
+	if open_bind_popup_on_click:
+		connect("pressed", self, "_on_pressed")
+	
+	# add hbox
+	hbox = HBoxContainer.new()
+	hbox.mouse_filter = MOUSE_FILTER_IGNORE
+	
 	for p in range(Multi.MAX_PLAYERS):
 		var player_status = PlayerStatus.new()
 		player_status.player_id = p
 		player_status.show_controller_status = show_controller_status
-		add_child(player_status)
+		hbox.add_child(player_status)
+	
+	add_child(hbox)
 	recreate()
-		
+	
+	rect_min_size = hbox.rect_size
+	
 func recreate():
-	for child in get_children():
+	for child in hbox.get_children():
 		child.icon_player_connected = icon_player_connected
 		child.icon_player_disconnected = icon_player_disconnected
 		child.icon_assign_controller = icon_assign_controller
@@ -30,6 +54,12 @@ func recreate():
 		child.icon_keyboard = icon_keyboard
 		child.show_controller_status = show_controller_status
 
+#############################################################
+# OPENING POPUP
+	
+func _on_pressed():
+	Multi.get_bind_popup_singleton().popup_centered()
+	
 #############################################################
 # SETTERS
 func _set_icon_player_connected(v):

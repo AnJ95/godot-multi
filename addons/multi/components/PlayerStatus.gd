@@ -19,6 +19,7 @@ var controller_status:TextureRect
 var add_icon:TextureRect
 
 func _ready():
+	mouse_filter = MOUSE_FILTER_IGNORE
 	check_player_status_icon()
 	recreate()
 	Multi.connect("new_controller_connected", self, "_on_player_state_changed")
