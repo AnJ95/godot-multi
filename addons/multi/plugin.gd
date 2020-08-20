@@ -28,6 +28,11 @@ var custom_types = {
 		"script" : load(CUSTOM_TYPES_PATH + "MultiPlayerStatus.gd"),
 		"icon": get_editor_interface().get_base_control().get_icon("HBoxContainer", "EditorIcons")
 	},
+	"MultiPlayerControlMenu": {
+		"base" : "GridContainer",
+		"script" : load(CUSTOM_TYPES_PATH + "MultiPlayerControlMenu.gd"),
+		"icon": get_editor_interface().get_base_control().get_icon("GridContainer", "EditorIcons")
+	},
 	"PlayerFocusButton": {
 		"base" : "Button",
 		"script" : load(CUSTOM_TYPES_PATH + "PlayerFocusControl.gd"),
