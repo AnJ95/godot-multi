@@ -30,13 +30,29 @@ var custom_types = {
 	},
 	"PlayerFocusButton": {
 		"base" : "Button",
-		"script" : load(CUSTOM_TYPES_PATH + "PlayerFocusButton.gd"),
+		"script" : load(CUSTOM_TYPES_PATH + "PlayerFocusControl.gd"),
 		"icon": get_editor_interface().get_base_control().get_icon("Button", "EditorIcons")
+	},
+	"PlayerFocusCheckBox": {
+		"base" : "CheckBox",
+		"script" : load(CUSTOM_TYPES_PATH + "PlayerFocusControl.gd"),
+		"icon": get_editor_interface().get_base_control().get_icon("CheckBox", "EditorIcons")
+	},
+	"PlayerFocusCheckButton": {
+		"base" : "CheckButton",
+		"script" : load(CUSTOM_TYPES_PATH + "PlayerFocusControl.gd"),
+		"icon": get_editor_interface().get_base_control().get_icon("CheckButton", "EditorIcons")
+	},
+	"PlayerFocusOptionButton": {
+		"base" : "OptionButton",
+		"script" : load(CUSTOM_TYPES_PATH + "PlayerFocusControl.gd"),
+		"icon": get_editor_interface().get_base_control().get_icon("OptionButton", "EditorIcons")
 	}
 }
 
 
 func _enter_tree():
+	
 	for key in autoloads.keys():
 		add_autoload_singleton(key, autoloads[key])
 	for key in custom_types.keys():
