@@ -6,7 +6,7 @@ export var is_initially_focused = false
 
 onready var player = Multi.player(player_id)
 
-var action_to_neighbour_map = {
+var action_to_function = {
 	"ui_left" : "find_focus_left",
 	"ui_right" : "find_focus_right",
 	"ui_up" : "find_focus_top",
@@ -27,7 +27,14 @@ func _ready():
 	focus_mode = Control.FOCUS_NONE
 	
 	add_to_group("PlayerFocusButton")
-	
+
+func _exit_tree():
+	if is_focused:
+		var focus = find_focus_next()
+		if !focus: focus = find_focus_prev()
+		self._set_is_focused(false)
+		focus._set_is_focused(true)
+
 func check_focus_node():
 	if !focus_node:
 		focus_node = Panel.new()
@@ -54,9 +61,9 @@ func _unhandled_input(event:InputEvent):
 		_gui_input(ev_click)
 	
 	# focus
-	for action in action_to_neighbour_map.keys():
+	for action in action_to_function.keys():
 		if player.is_event_action_just_pressed(event, action):
-			var neighbour:Control = call(action_to_neighbour_map[action])
+			var neighbour:Control = call(action_to_function[action])
 			if neighbour:
 				_set_is_focused(false)
 				neighbour.call_deferred("_set_is_focused", true)

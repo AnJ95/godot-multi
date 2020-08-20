@@ -14,6 +14,11 @@ func init(player_id:int):
 	
 func _ready():
 	add_actions()
+	
+	call_deferred("scroll_to_top")
+
+func scroll_to_top():
+	scroll_vertical = 0
 
 func add_actions():
 	
