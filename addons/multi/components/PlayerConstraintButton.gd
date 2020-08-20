@@ -6,7 +6,7 @@ export(int) var players_max:int = 4 setget _set_players_max
 
 export var icon_active = preload("res://addons/multi/assets/icons/player.png") setget _set_icon_active
 export var icon_optional = preload("res://addons/multi/assets/icons/player_semiactive.png") setget _set_icon_optional
-export var icon_inactive:StreamTexture = null setget _set_icon_inactive
+export var icon_inactive:StreamTexture = preload("res://addons/multi/assets/icons/player_inactive.png") setget _set_icon_inactive
 
 
 #############################################################

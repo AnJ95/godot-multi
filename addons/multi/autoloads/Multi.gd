@@ -170,6 +170,9 @@ func get_num_assigned_players()->int:
 		if player.is_controller_connected():
 			num += 1
 	return num
+
+func get_num_known_controllers()->int:
+	return __controllers.size()
 	
 func player(player_id)->Player:
 	if player_id >= 0 and player_id < __players.size():
