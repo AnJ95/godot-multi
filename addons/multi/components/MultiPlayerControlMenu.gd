@@ -3,6 +3,8 @@ extends GridContainer
 
 const ControlMenu = preload("res://addons/multi/controlsmenu/ControlMenu.tscn")
 
+var created_menu_for_player_ids = []
+
 func _ready():
 	add_control_menus()
 	
@@ -16,10 +18,14 @@ func add_control_menus():
 		
 		var inst:Control
 		
+		if created_menu_for_player_ids.has(i):
+			continue
+		
 		var player:Player = Multi.player(i)
 		if player and player.is_controller_connected():
 			inst = ControlMenu.instance()
 			inst.init(i)
+			created_menu_for_player_ids.append(i)
 		else:
 			inst = Label.new()
 			inst.text = str("Player %d not connected" % (i+1))
