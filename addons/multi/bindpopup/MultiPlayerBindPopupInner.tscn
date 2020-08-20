@@ -1,12 +1,14 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/multi/components/MultiPlayerStatus.gd" type="Script" id=1]
+[ext_resource path="res://addons/multi/bindpopup/MultiPlayerBindPopupInner.gd" type="Script" id=2]
 
 [node name="MultiPlayerBindPopupInner" type="MarginContainer"]
 margin_left = 15.0
 margin_top = 50.0
 margin_right = 15.0
 margin_bottom = 15.0
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -49,3 +51,5 @@ margin_left = 146.0
 margin_right = 177.0
 margin_bottom = 20.0
 text = "OK"
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/ButtonUnbind" to="." method="_on_ButtonUnbind_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/ButtonOK" to="." method="_on_ButtonOK_pressed"]

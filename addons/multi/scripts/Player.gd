@@ -26,11 +26,23 @@ func get_controller()->Controller:
 	return __controller
 	
 func set_controller(controller:Controller, input_map)->void:
-	# Debug print
-	print("[CONTROLLER ASSIGNED] Player %d to Controller %d: %s" % [__player_id + 1, controller.__device_id, controller.get_name()])
-	__controller = controller
-	controller.rebind_to_player(self, input_map)
-	emit_signal("controller_connection_changed")
+	if controller:
+		# Debug print
+		print("[CONTROLLER ASSIGNED] Player %d to Controller %d: %s" % [__player_id + 1, controller.__device_id, controller.get_name()])
+		__controller = controller
+		controller.rebind_to_player(self, input_map)
+		emit_signal("controller_connection_changed")
+	else:
+		unassign_controller(input_map)
+	
+func unassign_controller(input_map):
+	if __controller:
+		# Debug print
+		print("[CONTROLLER UNASSIGNED] Player %d from Controller %d: %s" % [__player_id + 1, __controller.__device_id, __controller.get_name()])
+		__controller.unbind_from_player(self, input_map)
+		__controller = null
+		emit_signal("controller_connection_changed")
+		Multi.emit_signal("num_assigned_players_changed", Multi.get_num_assigned_players())
 	
 func has_controller_assigned():
 	return __controller != null

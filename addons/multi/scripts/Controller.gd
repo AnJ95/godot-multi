@@ -71,6 +71,12 @@ func rebind_to_player(player, input_map):
 				new_event.device = __device_id if is_joypad else 0
 				
 				InputMap.action_add_event(converted_action, new_event)
+				
+func unbind_from_player(player, input_map):
+	for action in input_map:
+		var converted_action = player.__convert_action(action)
+		InputMap.erase_action(converted_action)
+	create_join_action()
 	
 func get_name()->String:
 	match __type:
