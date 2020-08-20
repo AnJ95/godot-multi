@@ -27,7 +27,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Multi"
-run/main_scene="res://Main.tscn"
+run/main_scene="res://scenes/Menu.tscn"
 config/icon="res://addons/multi/assets/logo/logo1024.png"
 
 [autoload]

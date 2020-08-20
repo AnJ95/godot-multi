@@ -1,0 +1,58 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scenes/Controls.gd" type="Script" id=1]
+[ext_resource path="res://addons/multi/components/PlayerFocusControl.gd" type="Script" id=3]
+[ext_resource path="res://addons/multi/components/MultiPlayerStatus.gd" type="Script" id=4]
+[ext_resource path="res://addons/multi/components/MultiPlayerControlMenu.gd" type="Script" id=5]
+
+[node name="Controls" type="CanvasLayer"]
+script = ExtResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 30.0
+margin_top = 30.0
+margin_right = -30.0
+margin_bottom = -30.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Controls" type="VBoxContainer" parent="MarginContainer"]
+margin_right = 964.0
+margin_bottom = 540.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 4.0
+custom_constants/separation = 30
+
+[node name="MultiPlayerControlMenu" type="GridContainer" parent="MarginContainer/Controls"]
+margin_right = 964.0
+margin_bottom = 420.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 2
+script = ExtResource( 5 )
+
+[node name="ButtonBack" type="Button" parent="MarginContainer/Controls"]
+margin_top = 450.0
+margin_right = 964.0
+margin_bottom = 470.0
+focus_mode = 0
+text = "Back"
+script = ExtResource( 3 )
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/Controls"]
+margin_top = 500.0
+margin_right = 964.0
+margin_bottom = 540.0
+custom_constants/separation = 50
+alignment = 2
+
+[node name="MultiPlayerStatus" type="HBoxContainer" parent="MarginContainer/Controls/HBoxContainer2"]
+margin_left = 792.0
+margin_right = 964.0
+margin_bottom = 40.0
+script = ExtResource( 4 )
+[connection signal="pressed" from="MarginContainer/Controls/ButtonBack" to="." method="_on_ButtonBack_pressed"]
