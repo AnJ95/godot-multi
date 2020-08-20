@@ -14,8 +14,7 @@ onready var button = $Button
 
 #############################################################
 # CUSTOMIZATION
-
-
+export var show_button_remove = true
 
 #############################################################
 # STATE
@@ -47,6 +46,8 @@ func init(player_id, action, event_i):
 	
 func _ready():
 	button.text = get_display_caption()
+	if !show_button_remove:
+		$ButtonRemove.hide()
 
 #############################################################
 # AWAITING CONDITION

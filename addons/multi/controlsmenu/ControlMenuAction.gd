@@ -3,8 +3,8 @@ extends Control
 
 const ControlMenuButton = preload("ControlMenuButton.tscn")
 
-onready var label = $VBoxContainer/HBoxContainer/Label
-onready var btn_root = $VBoxContainer/ControlMenuButtons
+var label
+var btn_root
 
 var player_id:int = 0
 var action:String
@@ -15,6 +15,9 @@ func init(player_id:int, action:String):
 	self.player_id = player_id
 	self.action = action
 	
+	label = $VBoxContainer/HBoxContainer/Label
+	btn_root = $VBoxContainer/ControlMenuButtons
+
 	$VBoxContainer/HBoxContainer/ButtonAdd.player_id = player_id
 	
 	player = Multi.player(player_id)
@@ -26,13 +29,17 @@ func _ready():
 	else:
 		label.text = (action.substr(0, 1).to_upper() + action.substr(1, -1).to_lower()).replace("_", " ")
 	
+	add_all_buttons()
+
+func add_all_buttons():
 	# Add button for every event
 	for i in range(player.get_action_list(action).size()):
 		add_button()
-
-func add_button():
+		
+func add_button(show_button_remove=true):
 	var btn_inst = ControlMenuButton.instance()
 	btn_inst.init(player_id, action, btn_root.get_child_count())
+	btn_inst.show_button_remove = show_button_remove
 	btn_inst.get_node("ButtonRemove").connect("pressed", self, "_on_ButtonRemove_pressed", [btn_inst])
 	btn_inst.connect("control_changed", self, "_on_control_changed")
 	btn_root.add_child(btn_inst)

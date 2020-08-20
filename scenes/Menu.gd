@@ -15,3 +15,6 @@ func _on_ButtonMultiplayer_pressed():
 
 func _on_ButtonControls_pressed():
 	get_tree().change_scene("res://scenes/Controls.tscn")
+
+func _on_ButtonControlsSimple_pressed():
+	get_tree().change_scene("res://scenes/ControlsSimple.tscn")

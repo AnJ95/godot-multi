@@ -19,7 +19,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Controls" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 margin_right = 964.0
 margin_bottom = 540.0
 size_flags_horizontal = 3
@@ -27,7 +27,7 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 4.0
 custom_constants/separation = 30
 
-[node name="MultiPlayerControlMenu" type="GridContainer" parent="MarginContainer/Controls"]
+[node name="MultiPlayerControlMenu" type="GridContainer" parent="MarginContainer/VBoxContainer"]
 margin_right = 964.0
 margin_bottom = 420.0
 size_flags_horizontal = 3
@@ -35,7 +35,7 @@ size_flags_vertical = 3
 columns = 2
 script = ExtResource( 5 )
 
-[node name="ButtonBack" type="Button" parent="MarginContainer/Controls"]
+[node name="ButtonBack" type="Button" parent="MarginContainer/VBoxContainer"]
 margin_top = 450.0
 margin_right = 964.0
 margin_bottom = 470.0
@@ -44,16 +44,16 @@ text = "Back"
 script = ExtResource( 3 )
 allow_all_players = true
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/Controls"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 margin_top = 500.0
 margin_right = 964.0
 margin_bottom = 540.0
 custom_constants/separation = 50
 alignment = 2
 
-[node name="MultiPlayerStatus" type="HBoxContainer" parent="MarginContainer/Controls/HBoxContainer2"]
+[node name="MultiPlayerStatus" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 792.0
 margin_right = 964.0
 margin_bottom = 40.0
 script = ExtResource( 4 )
-[connection signal="pressed" from="MarginContainer/Controls/ButtonBack" to="." method="_on_ButtonBack_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonBack" to="." method="_on_ButtonBack_pressed"]

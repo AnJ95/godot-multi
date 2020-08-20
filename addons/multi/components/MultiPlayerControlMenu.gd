@@ -1,6 +1,8 @@
 tool
 extends GridContainer
 
+export var make_simple = false
+
 const ControlMenu = preload("res://addons/multi/controlsmenu/ControlMenu.tscn")
 
 var created_menu_for_player_ids = []
@@ -24,7 +26,7 @@ func add_control_menus():
 		var player:Player = Multi.player(i)
 		if player and player.is_controller_connected():
 			inst = ControlMenu.instance()
-			inst.init(i)
+			inst.init(i, make_simple)
 			created_menu_for_player_ids.append(i)
 		else:
 			inst = Label.new()

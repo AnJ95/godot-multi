@@ -83,7 +83,7 @@ func _ready():
 	# ...and await future changes
 	Input.connect("joy_connection_changed", self, "_on_joy_connection_changed")
 
-func _process(_delta):
+func _input(event:InputEvent):
 	# Don't join in editor
 	if Engine.editor_hint:
 		return
@@ -101,7 +101,10 @@ func _process(_delta):
 	
 	# check if any of the non-assigned controllers want to assign
 	for controller in __controllers.values():
-		if Input.is_action_just_pressed(controller.get_join_action()):
+		controller.is_event_from_this_controller(event)
+		var join_action = controller.get_join_action()
+		if InputMap.has_action(join_action) and event.is_action(join_action):
+			get_viewport().set_input_as_handled()
 			__assign_controller_to_player(controller, player)
 
 func __assign_controller_to_player(controller, player):

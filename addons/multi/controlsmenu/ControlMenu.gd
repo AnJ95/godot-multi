@@ -2,15 +2,18 @@ tool
 extends ScrollContainer
 
 const ControlMenuAction = preload("ControlMenuAction.tscn")
+const ControlMenuActionSimple = preload("ControlMenuActionSimple.tscn")
 
 export(String) var filter_actions:String = "^(ui_home)|(ui_end)|(ui_select)|(ui_page_up)|(ui_page_down)|(ui_focus_prev)|(ui_focus_next)"
 
 var player_id:int = 0
+var make_simple:bool = false
 
 onready var root = $Grid
 
-func init(player_id:int):
+func init(player_id:int, make_simple:bool):
 	self.player_id = player_id
+	self.make_simple = make_simple
 	
 func _ready():
 	add_actions()
@@ -55,7 +58,7 @@ func add_actions():
 			continue
 		
 		# create and add instance
-		var menu_action_inst = ControlMenuAction.instance()
+		var menu_action_inst = ControlMenuActionSimple.instance() if make_simple else ControlMenuAction.instance()
 		menu_action_inst.init(player_id, action_name)
 		root.add_child(menu_action_inst)
 	
