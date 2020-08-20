@@ -71,6 +71,12 @@ func rebind_to_player(player, input_map):
 				new_event.device = __device_id if is_joypad else 0
 				
 				InputMap.action_add_event(converted_action, new_event)
+			
+				# Also add event to "normal" ui actions, if allowed
+				if player.__player_id == 0 or !Multi.GIVE_UI_ACCESS_ONLY_TO_PLAYER_ONE:
+					if action.begins_with("ui_"):
+						InputMap.action_add_event(action, new_event)
+					
 				
 func unbind_from_player(player, input_map):
 	for action in input_map:

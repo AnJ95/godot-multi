@@ -4,10 +4,7 @@ extends Node
 const ALLOW_ONE_KEYBOARD_PLAYER = true
 const AUTO_ASSIGN_KEYBOARD_TO_PLAYER_ONE = false
 
-# Internally, every action like "jump" is duplicated to "p_0_jump", "p_1_jump", ...
-# and the original "jump" is deleted.
-# Add any action to the regex if you don't want it do be deleted.
-const EXCLUDE_ACTIONS_FROM_DELETION:String = "^(ui_)"
+const GIVE_UI_ACCESS_ONLY_TO_PLAYER_ONE = true
 
 const MAX_PLAYERS = 4
 
@@ -119,15 +116,15 @@ func __add_new_controller(controller:Controller):
 func __preprocess_input_map():
 	InputMap.load_from_globals()
 	
-	var regex = RegEx.new()
-	regex.compile(EXCLUDE_ACTIONS_FROM_DELETION)
-	
 	for action in InputMap.get_actions():
 		__input_map[action] = []
 		for event in InputMap.get_action_list(action):
 			__input_map[action].append(event)
 			
-		if !regex.search(action):
+		if action.begins_with("ui_"):
+			for event in InputMap.get_action_list(action):
+				InputMap.action_erase_event(action, event)
+		else:
 			InputMap.erase_action(action)
 
 func __find_first_unassigned_player()->Player:
