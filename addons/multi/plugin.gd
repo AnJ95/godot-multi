@@ -15,48 +15,39 @@ const autoloads = {
 var custom_types = {
 	"PlayerConstraintButton": {
 		"base" : "Button",
-		"script" : load(CUSTOM_TYPES_PATH + "PlayerConstraintButton.gd"),
-		"icon": get_editor_interface().get_base_control().get_icon("Button", "EditorIcons")
+		"script" : load(CUSTOM_TYPES_PATH + "PlayerConstraintButton.gd")
 	},
 	"PlayerStatus": {
 		"base" : "Control",
-		"script" : load(CUSTOM_TYPES_PATH + "PlayerStatus.gd"),
-		"icon": get_editor_interface().get_base_control().get_icon("Control", "EditorIcons")
+		"script" : load(CUSTOM_TYPES_PATH + "PlayerStatus.gd")
 	},
 	"MultiPlayerStatus": {
 		"base" : "Button",
-		"script" : load(CUSTOM_TYPES_PATH + "MultiPlayerStatus.gd"),
-		"icon": get_editor_interface().get_base_control().get_icon("Button", "EditorIcons")
+		"script" : load(CUSTOM_TYPES_PATH + "MultiPlayerStatus.gd")
 	},
 	"MultiPlayerControlMenu": {
 		"base" : "GridContainer",
-		"script" : load(CUSTOM_TYPES_PATH + "MultiPlayerControlMenu.gd"),
-		"icon": get_editor_interface().get_base_control().get_icon("GridContainer", "EditorIcons")
+		"script" : load(CUSTOM_TYPES_PATH + "MultiPlayerControlMenu.gd")
 	},
 	"PlayerFocusButton": {
 		"base" : "Button",
-		"script" : load(CUSTOM_TYPES_PATH + "PlayerFocusControl.gd"),
-		"icon": get_editor_interface().get_base_control().get_icon("Button", "EditorIcons")
+		"script" : load(CUSTOM_TYPES_PATH + "PlayerFocusControl.gd")
 	},
 	"PlayerFocusCheckBox": {
 		"base" : "CheckBox",
-		"script" : load(CUSTOM_TYPES_PATH + "PlayerFocusControl.gd"),
-		"icon": get_editor_interface().get_base_control().get_icon("CheckBox", "EditorIcons")
+		"script" : load(CUSTOM_TYPES_PATH + "PlayerFocusControl.gd")
 	},
 	"PlayerFocusCheckButton": {
 		"base" : "CheckButton",
-		"script" : load(CUSTOM_TYPES_PATH + "PlayerFocusControl.gd"),
-		"icon": get_editor_interface().get_base_control().get_icon("CheckButton", "EditorIcons")
+		"script" : load(CUSTOM_TYPES_PATH + "PlayerFocusControl.gd")
 	},
 	"PlayerFocusOptionButton": {
 		"base" : "OptionButton",
-		"script" : load(CUSTOM_TYPES_PATH + "PlayerFocusControl.gd"),
-		"icon": get_editor_interface().get_base_control().get_icon("OptionButton", "EditorIcons")
+		"script" : load(CUSTOM_TYPES_PATH + "PlayerFocusControl.gd")
 	},
 	"MultiPlayerBindPopup": {
 		"base" : "WindowDialog",
-		"script" : load(CUSTOM_TYPES_PATH + "MultiPlayerBindPopup.gd"),
-		"icon": get_editor_interface().get_base_control().get_icon("WindowDialog", "EditorIcons")
+		"script" : load(CUSTOM_TYPES_PATH + "MultiPlayerBindPopup.gd")
 	}
 }
 
@@ -65,9 +56,12 @@ func _enter_tree():
 	
 	for key in autoloads.keys():
 		add_autoload_singleton(key, autoloads[key])
+		
+	var icon:Texture = preload("res://addons/multi/assets/logo/logo16.png")
+	
 	for key in custom_types.keys():
 		var type = custom_types[key]
-		add_custom_type(key, type.base, type.script, type.icon)
+		add_custom_type(key, type.base, type.script, icon)
 
 	# Add the loaded scene to the docks.
 	dock = create_dock()
