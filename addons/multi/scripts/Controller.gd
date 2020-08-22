@@ -30,12 +30,11 @@ func create_join_action():
 	InputMap.add_action(action)
 	match __type:
 		CONTROLLER_TYPE_KEYBOARD:
-			var ev = InputEventKey.new()
-			ev.scancode = OS.find_scancode_from_string("Space")
-			InputMap.action_add_event(action, ev)
-			ev = InputEventMouseButton.new()
-			ev.button_index = BUTTON_LEFT
-			InputMap.action_add_event(action, ev)
+			for key in ["Space", "Enter", "Left", "Right", "Up", "Down"]:
+				var ev = InputEventKey.new()
+				ev.scancode = OS.find_scancode_from_string(key)
+				InputMap.action_add_event(action, ev)
+				
 		CONTROLLER_TYPE_JOYPAD:
 			for button_index in [JOY_XBOX_A, JOY_XBOX_B, JOY_XBOX_X, JOY_XBOX_Y, JOY_START, JOY_SELECT]:
 				var ev = InputEventJoypadButton.new()
