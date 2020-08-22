@@ -29,23 +29,24 @@ func _ready():
 	focus_mode = Control.FOCUS_NONE
 	if open_bind_popup_on_click:
 		connect("pressed", self, "_on_pressed")
-	
-	# add hbox
-	hbox = HBoxContainer.new()
-	hbox.mouse_filter = MOUSE_FILTER_IGNORE
-	
-	for p in range(Multi.MAX_PLAYERS):
-		var player_status = PlayerStatus.new()
-		player_status.player_id = p
-		player_status.show_controller_status = show_controller_status
-		hbox.add_child(player_status)
-	
-	add_child(hbox)
 	recreate()
 	
 	rect_min_size = hbox.rect_size
 	
 func recreate():
+	if !hbox:
+		# add hbox
+		hbox = HBoxContainer.new()
+		hbox.mouse_filter = MOUSE_FILTER_IGNORE
+		
+		for p in range(Multi.MAX_PLAYERS):
+			var player_status = PlayerStatus.new()
+			player_status.player_id = p
+			player_status.show_controller_status = show_controller_status
+			hbox.add_child(player_status)
+		
+		add_child(hbox)
+		
 	for child in hbox.get_children():
 		child.icon_player_connected = icon_player_connected
 		child.icon_player_disconnected = icon_player_disconnected
