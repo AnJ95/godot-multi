@@ -9,21 +9,23 @@ const GIVE_UI_ACCESS_ONLY_TO_PLAYER_ONE = true
 const MAX_PLAYERS = 4
 
 const PRETTY_ACTION_NAMES = {
-	"ui_accept" : "Accept",
-	"ui_cancel" : "Cancel",
+	"dash" : "Dash",
 	"ui_left" : "Left",
 	"ui_right" : "Right",
 	"ui_up" : "Up",
-	"ui_down" : "Down"
+	"ui_down" : "Down",
+	"ui_accept" : "Accept",
+	"ui_cancel" : "Cancel"
 }
 
 const PREFFERED_ACTION_ORDER = [
-	"ui_accept",
-	"ui_cancel",
+	"dash",
 	"ui_left",
 	"ui_right",
 	"ui_up",
-	"ui_down"
+	"ui_down",
+	"ui_accept",
+	"ui_cancel"
 ]
 
 const MOUSE_BUTTON_STRINGS = {
