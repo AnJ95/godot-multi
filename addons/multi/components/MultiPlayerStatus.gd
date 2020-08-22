@@ -7,6 +7,7 @@ export var open_bind_popup_on_click = true
 
 export var icon_player_connected = preload("res://addons/multi/assets/icons/player.png") setget _set_icon_player_connected
 export var icon_player_disconnected = preload("res://addons/multi/assets/icons/player_inactive.png") setget _set_icon_player_disconnected
+export var icon_player_required = preload("res://addons/multi/assets/icons/player_error.png") setget _set_icon_player_required
 
 export var icon_assign_controller = preload("res://addons/multi/assets/icons/bubble.png") setget _set_icon_assign_controller
 
@@ -73,6 +74,10 @@ func _set_show_controller_status(v):
 	
 func _set_icon_player_disconnected(v):
 	icon_player_disconnected = v
+	recreate()
+
+func _set_icon_player_required(v):
+	icon_player_required = v
 	recreate()
 	
 func _set_icon_assign_controller(v):

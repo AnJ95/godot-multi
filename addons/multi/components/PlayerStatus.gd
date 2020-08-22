@@ -7,6 +7,7 @@ export var show_controller_status = false setget _set_show_controller_status
 
 export var icon_player_connected = preload("res://addons/multi/assets/icons/player.png") setget _set_icon_player_connected
 export var icon_player_disconnected = preload("res://addons/multi/assets/icons/player_inactive.png") setget _set_icon_player_disconnected
+export var icon_player_required = preload("res://addons/multi/assets/icons/player_error.png") setget _set_icon_player_required
 
 export var icon_assign_controller = preload("res://addons/multi/assets/icons/bubble.png") setget _set_icon_assign_controller
 
@@ -59,7 +60,7 @@ func check_add_icon():
 		tween.repeat = true
 		tween.interpolate_property(add_icon, "modulate:a", 1, 0.5, 0.5, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT, 0)
 		tween.interpolate_property(add_icon, "modulate:a", 0.5, 1, 0.5, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT, 0.5)
-		tween.call_deferred("start")
+		tween.connect("ready", tween, "start")
 		
 
 func recreate():
@@ -84,6 +85,9 @@ func _on_player_state_changed(_x=null):
 	
 	if player and player.is_controller_connected():
 		icon_player = icon_player_connected
+	elif Multi.is_enforcing_player_num() and player_id < Multi.__enforce_min:
+		icon_player = icon_player_required
+		
 	
 	check_player_status_icon()
 	player_status.texture = icon_player
@@ -123,6 +127,10 @@ func _set_icon_player_connected(v):
 	
 func _set_icon_player_disconnected(v):
 	icon_player_disconnected = v
+	recreate()
+
+func _set_icon_player_required(v):
+	icon_player_required = v
 	recreate()
 	
 func _set_icon_assign_controller(v):
