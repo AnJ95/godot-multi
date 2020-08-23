@@ -32,6 +32,6 @@ func get_valid_spawn_point()->Vector2:
 	
 func get_player_color(player_id:int)->Color:
 	var hue = player_id / float(Multi.get_num_assigned_players())
-	return Color().from_hsv(hue, 0.6, 0.9, 1)
+	return Color().from_hsv(hue, 0.7, 0.6, 1)
 	
 
