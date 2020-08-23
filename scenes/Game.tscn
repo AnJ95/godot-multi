@@ -66,7 +66,6 @@ __meta__ = {
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="MarginContainer" type="MarginContainer" parent="UI"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 30.0
@@ -89,9 +88,9 @@ __meta__ = {
 }
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer"]
-margin_top = 500.0
+margin_top = 508.0
 margin_right = 964.0
-margin_bottom = 540.0
+margin_bottom = 548.0
 custom_constants/separation = 50
 alignment = 2
 
