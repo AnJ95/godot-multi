@@ -10,6 +10,7 @@ func spawn(player_id:int):
 	inst.connect("respawn_character", self, "respawn")
 	add_child(inst)
 	inst.global_position = get_valid_spawn_point()
+	return inst
 
 func respawn(character):
 	character.global_position = get_valid_spawn_point()

@@ -135,6 +135,11 @@ margin_bottom = 548.0
 custom_constants/separation = 50
 alignment = 2
 
+[node name="CharacterHealth" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/HBoxContainer2"]
+margin_right = 742.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+
 [node name="MultiPlayerStatus" type="Button" parent="UI/MarginContainer/VBoxContainer/HBoxContainer2"]
 margin_left = 792.0
 margin_right = 964.0

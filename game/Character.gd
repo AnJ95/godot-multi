@@ -1,7 +1,9 @@
 tool
 extends KinematicBody2D
 
+signal health_changed(health)
 signal respawn_character(character)
+signal lost(character)
 
 # get Player object from customizable player_id
 export(int) var player_id:int = 0
@@ -22,7 +24,7 @@ const out_of_screen_tolerance = 100
 const dash_power = 500
 const bounce_factor = 0.5
 const gravity = 300
-const health_initial = 10
+const health_initial = 3
 
 var health = health_initial
 var velocity = Vector2.ZERO
@@ -37,6 +39,7 @@ func _ready():
 	player.connect("controller_connection_changed", self, "_on_controller_connection_changed")
 	_on_controller_connection_changed()
 	_on_set_color(color)
+	emit_signal("health_changed", health)
 
 func _physics_process(delta):
 	if Engine.editor_hint: return
@@ -83,15 +86,24 @@ func _physics_process(delta):
 		has_dashed = true
 		is_dead = true
 		
-		timer_dead.start()
+		emit_signal("health_changed", health)
+		
+		if health > 0:
+			timer_dead.start()
+		else:
+			emit_signal("lost", self)
+			get_parent().remove_child(self)
+			queue_free()
 
+func win():
+	is_dead = true
+	$Tween.interpolate_property(sprite, "scale", sprite.scale, Vector2(30, 30), 3,Tween.TRANS_EXPO, Tween.EASE_IN_OUT)
+	$Tween.connect("tween_all_completed", get_tree(), "reload_current_scene")
+	$Tween.start()
+	
 func _on_TimerDead_timeout():
-	if health > 0:
-		emit_signal("respawn_character", self)
-		is_dead = false
-	else:
-		get_parent().remove_child(self)
-		queue_free()
+	emit_signal("respawn_character", self)
+	is_dead = false
 	
 func bounce_off(slide:KinematicCollision2D, prev_vel:Vector2):
 	has_dashed = false
@@ -110,7 +122,7 @@ func dash(direction:Vector2):
 	
 	squish_rotation = Vector2.UP.angle_to(velocity)
 	squish = max(squish -0.4, -1)
-		
+	
 func _on_controller_connection_changed():
 	# if controller disconnected: show animation
 	if player.is_controller_connected():
