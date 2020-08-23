@@ -7,3 +7,4 @@ func _ready():
 	add_child(inner)
 	rect_size = inner.rect_size + Vector2(inner.margin_left + inner.margin_right, inner.margin_top + inner.margin_bottom)
 	add_to_group("MultiPlayerBindPopup")
+	pause_mode = Node.PAUSE_MODE_PROCESS
