@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/Game.gd" type="Script" id=1]
 [ext_resource path="res://game/StaticTerrain.gd" type="Script" id=2]
 [ext_resource path="res://scenes/CharacterSpawner.gd" type="Script" id=3]
 [ext_resource path="res://addons/multi/components/MultiPlayerStatus.gd" type="Script" id=4]
+[ext_resource path="res://game/assets/texture_0.png" type="Texture" id=5]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -16,7 +17,7 @@ layer = -1
 [node name="Background" type="ColorRect" parent="Background"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0.282353, 0.32549, 0.368627, 1 )
+color = Color( 0.529412, 0.690196, 0.741176, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -25,33 +26,73 @@ __meta__ = {
 script = ExtResource( 2 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticTerrain"]
-polygon = PoolVector2Array( 448, 512, 576, 512, 768, 448, 896, 448, 896, 512, 768, 512, 576, 576, 448, 576, 256, 512, 128, 512, 128, 448, 256, 448 )
+polygon = PoolVector2Array( 128, 448, 128, 512, 256, 512, 448, 576, 576, 576, 768, 512, 896, 512, 896, 448, 768, 448, 576, 512, 448, 512, 256, 448 )
 
 [node name="Polygon2D" type="Polygon2D" parent="StaticTerrain"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 128, 448, 128, 512, 256, 512, 448, 576, 576, 576, 768, 512, 896, 512, 896, 448, 768, 448, 576, 512, 448, 512, 256, 448 )
+
+[node name="Line2D" type="Line2D" parent="StaticTerrain"]
+points = PoolVector2Array( 128, 448, 128, 512, 256, 512, 448, 576, 576, 576, 768, 512, 896, 512, 896, 448, 768, 448, 576, 512, 448, 512, 256, 448, 128, 448 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
 
 [node name="StaticTerrain2" type="StaticBody2D" parent="."]
 script = ExtResource( 2 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticTerrain2"]
-polygon = PoolVector2Array( 512, 128, 640, 32, 384, 32 )
+polygon = PoolVector2Array( 384, 32, 512, 128, 640, 32 )
 
 [node name="Polygon2D" type="Polygon2D" parent="StaticTerrain2"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 384, 32, 512, 128, 640, 32 )
+
+[node name="Line2D" type="Line2D" parent="StaticTerrain2"]
+points = PoolVector2Array( 384, 32, 512, 128, 640, 32, 384, 32 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
 
 [node name="StaticTerrain3" type="StaticBody2D" parent="."]
 script = ExtResource( 2 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticTerrain3"]
-polygon = PoolVector2Array( 896, 256, 992, 384, 992, 128 )
+polygon = PoolVector2Array( 992, 128, 896, 256, 992, 384 )
 
 [node name="Polygon2D" type="Polygon2D" parent="StaticTerrain3"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 992, 128, 896, 256, 992, 384 )
+
+[node name="Line2D" type="Line2D" parent="StaticTerrain3"]
+points = PoolVector2Array( 992, 128, 896, 256, 992, 384, 992, 128 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
 
 [node name="StaticTerrain4" type="StaticBody2D" parent="."]
 script = ExtResource( 2 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticTerrain4"]
-polygon = PoolVector2Array( 128, 256, 32, 384, 32, 128 )
+polygon = PoolVector2Array( 32, 128, 128, 256, 32, 384 )
 
 [node name="Polygon2D" type="Polygon2D" parent="StaticTerrain4"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 32, 128, 128, 256, 32, 384 )
+
+[node name="Line2D" type="Line2D" parent="StaticTerrain4"]
+points = PoolVector2Array( 32, 128, 128, 256, 32, 384, 32, 128 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
 
 [node name="CharacterSpawner" type="Control" parent="."]
 margin_left = 208.0
