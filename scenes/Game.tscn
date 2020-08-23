@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/Game.gd" type="Script" id=1]
 [ext_resource path="res://game/StaticTerrain.gd" type="Script" id=2]
 [ext_resource path="res://scenes/CharacterSpawner.gd" type="Script" id=3]
 [ext_resource path="res://addons/multi/components/MultiPlayerStatus.gd" type="Script" id=4]
 [ext_resource path="res://game/assets/texture_0.png" type="Texture" id=5]
+[ext_resource path="res://scenes/LevelSelector.gd" type="Script" id=6]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -22,17 +23,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="StaticTerrain" type="StaticBody2D" parent="."]
+[node name="LevelSelector" type="Node2D" parent="."]
+script = ExtResource( 6 )
+
+[node name="Level0" type="StaticBody2D" parent="LevelSelector"]
+visible = false
 script = ExtResource( 2 )
 
-[node name="BigPlatformA" type="CollisionPolygon2D" parent="StaticTerrain"]
+[node name="BigPlatformA" type="CollisionPolygon2D" parent="LevelSelector/Level0"]
 polygon = PoolVector2Array( 128, 448, 128, 512, 256, 512, 448, 576, 576, 576, 768, 512, 896, 512, 896, 448, 768, 448, 576, 512, 448, 512, 256, 448 )
 
-[node name="Polygon2D" type="Polygon2D" parent="StaticTerrain/BigPlatformA"]
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level0/BigPlatformA"]
 texture = ExtResource( 5 )
 polygon = PoolVector2Array( 128, 448, 128, 512, 256, 512, 448, 576, 576, 576, 768, 512, 896, 512, 896, 448, 768, 448, 576, 512, 448, 512, 256, 448 )
 
-[node name="Line2D" type="Line2D" parent="StaticTerrain/BigPlatformA"]
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level0/BigPlatformA"]
 points = PoolVector2Array( 128, 448, 128, 512, 256, 512, 448, 576, 576, 576, 768, 512, 896, 512, 896, 448, 768, 448, 576, 512, 448, 512, 256, 448, 128, 448 )
 width = 4.0
 default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
@@ -40,14 +45,14 @@ joint_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 2
 
-[node name="TriangleTop" type="CollisionPolygon2D" parent="StaticTerrain"]
+[node name="TriangleTop" type="CollisionPolygon2D" parent="LevelSelector/Level0"]
 polygon = PoolVector2Array( 384, 32, 512, 128, 640, 32 )
 
-[node name="Polygon2D" type="Polygon2D" parent="StaticTerrain/TriangleTop"]
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level0/TriangleTop"]
 texture = ExtResource( 5 )
 polygon = PoolVector2Array( 384, 32, 512, 128, 640, 32 )
 
-[node name="Line2D" type="Line2D" parent="StaticTerrain/TriangleTop"]
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level0/TriangleTop"]
 points = PoolVector2Array( 384, 32, 512, 128, 640, 32, 384, 32 )
 width = 4.0
 default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
@@ -55,14 +60,14 @@ joint_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 2
 
-[node name="TriangleRight" type="CollisionPolygon2D" parent="StaticTerrain"]
+[node name="TriangleRight" type="CollisionPolygon2D" parent="LevelSelector/Level0"]
 polygon = PoolVector2Array( 992, 128, 896, 256, 992, 384 )
 
-[node name="Polygon2D" type="Polygon2D" parent="StaticTerrain/TriangleRight"]
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level0/TriangleRight"]
 texture = ExtResource( 5 )
 polygon = PoolVector2Array( 992, 128, 896, 256, 992, 384 )
 
-[node name="Line2D" type="Line2D" parent="StaticTerrain/TriangleRight"]
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level0/TriangleRight"]
 points = PoolVector2Array( 992, 128, 896, 256, 992, 384, 992, 128 )
 width = 4.0
 default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
@@ -70,14 +75,14 @@ joint_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 2
 
-[node name="TriangleLeft" type="CollisionPolygon2D" parent="StaticTerrain"]
+[node name="TriangleLeft" type="CollisionPolygon2D" parent="LevelSelector/Level0"]
 polygon = PoolVector2Array( 32, 128, 128, 256, 32, 384 )
 
-[node name="Polygon2D" type="Polygon2D" parent="StaticTerrain/TriangleLeft"]
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level0/TriangleLeft"]
 texture = ExtResource( 5 )
 polygon = PoolVector2Array( 32, 128, 128, 256, 32, 384 )
 
-[node name="Line2D" type="Line2D" parent="StaticTerrain/TriangleLeft"]
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level0/TriangleLeft"]
 points = PoolVector2Array( 32, 128, 128, 256, 32, 384, 32, 128 )
 width = 4.0
 default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
@@ -85,11 +90,408 @@ joint_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 2
 
+[node name="Level1" type="StaticBody2D" parent="LevelSelector"]
+visible = false
+script = ExtResource( 2 )
+
+[node name="BigPlatformB" type="CollisionPolygon2D" parent="LevelSelector/Level1"]
+polygon = PoolVector2Array( 128, 512, 128, 576, 256, 512, 384, 576, 640, 576, 768, 512, 896, 576, 896, 512, 768, 448, 640, 512, 384, 512, 256, 448 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level1/BigPlatformB"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 128, 512, 128, 576, 256, 512, 384, 576, 640, 576, 768, 512, 896, 576, 896, 512, 768, 448, 640, 512, 384, 512, 256, 448 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level1/BigPlatformB"]
+points = PoolVector2Array( 128, 512, 128, 576, 256, 512, 384, 576, 640, 576, 768, 512, 896, 576, 896, 512, 768, 448, 640, 512, 384, 512, 256, 448, 128, 512 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="DiamondLeft" type="CollisionPolygon2D" parent="LevelSelector/Level1"]
+polygon = PoolVector2Array( 128, 256, 192, 384, 256, 256, 192, 128 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level1/DiamondLeft"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 128, 256, 192, 384, 256, 256, 192, 128 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level1/DiamondLeft"]
+points = PoolVector2Array( 128, 256, 192, 384, 256, 256, 192, 128, 128, 256 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="DiamondRight" type="CollisionPolygon2D" parent="LevelSelector/Level1"]
+polygon = PoolVector2Array( 768, 256, 832, 384, 896, 256, 832, 128 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level1/DiamondRight"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 768, 256, 832, 384, 896, 256, 832, 128 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level1/DiamondRight"]
+points = PoolVector2Array( 768, 256, 832, 384, 896, 256, 832, 128, 768, 256 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Level2" type="StaticBody2D" parent="LevelSelector"]
+visible = false
+script = ExtResource( 2 )
+
+[node name="TriangleBot" type="CollisionPolygon2D" parent="LevelSelector/Level2"]
+polygon = PoolVector2Array( 384, 576, 512, 480, 640, 576 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level2/TriangleBot"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 384, 576, 512, 480, 640, 576 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level2/TriangleBot"]
+points = PoolVector2Array( 384, 576, 512, 480, 640, 576, 384, 576 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="CornerTL" type="CollisionPolygon2D" parent="LevelSelector/Level2"]
+polygon = PoolVector2Array( 32, 32, 32, 256, 96, 256, 96, 96, 256, 96, 256, 32 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level2/CornerTL"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 32, 32, 32, 256, 96, 256, 96, 96, 256, 96, 256, 32 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level2/CornerTL"]
+points = PoolVector2Array( 32, 32, 32, 256, 96, 256, 96, 96, 256, 96, 256, 32, 32, 32 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="CornerTR" type="CollisionPolygon2D" parent="LevelSelector/Level2"]
+polygon = PoolVector2Array( 992, 32, 992, 256, 928, 256, 928, 96, 768, 96, 768, 32 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level2/CornerTR"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 992, 32, 992, 256, 928, 256, 928, 96, 768, 96, 768, 32 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level2/CornerTR"]
+points = PoolVector2Array( 992, 32, 992, 256, 928, 256, 928, 96, 768, 96, 768, 32, 992, 32 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="CornerBR" type="CollisionPolygon2D" parent="LevelSelector/Level2"]
+polygon = PoolVector2Array( 992, 576, 992, 352, 928, 352, 928, 512, 768, 512, 768, 576 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level2/CornerBR"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 992, 576, 992, 352, 928, 352, 928, 512, 768, 512, 768, 576 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level2/CornerBR"]
+points = PoolVector2Array( 992, 576, 992, 352, 928, 352, 928, 512, 768, 512, 768, 576, 992, 576 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="CornerBL" type="CollisionPolygon2D" parent="LevelSelector/Level2"]
+polygon = PoolVector2Array( 32, 576, 32, 352, 96, 352, 96, 512, 256, 512, 256, 576 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level2/CornerBL"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 32, 576, 32, 352, 96, 352, 96, 512, 256, 512, 256, 576 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level2/CornerBL"]
+points = PoolVector2Array( 32, 576, 32, 352, 96, 352, 96, 512, 256, 512, 256, 576, 32, 576 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Level3" type="StaticBody2D" parent="LevelSelector"]
+visible = false
+script = ExtResource( 2 )
+
+[node name="BigPlatformB" type="CollisionPolygon2D" parent="LevelSelector/Level3"]
+polygon = PoolVector2Array( 128, 512, 128, 576, 256, 512, 384, 576, 640, 576, 768, 512, 896, 576, 896, 512, 768, 448, 640, 512, 384, 512, 256, 448 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level3/BigPlatformB"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 128, 512, 128, 576, 256, 512, 384, 576, 640, 576, 768, 512, 896, 576, 896, 512, 768, 448, 640, 512, 384, 512, 256, 448 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level3/BigPlatformB"]
+points = PoolVector2Array( 128, 512, 128, 576, 256, 512, 384, 576, 640, 576, 768, 512, 896, 576, 896, 512, 768, 448, 640, 512, 384, 512, 256, 448, 128, 512 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="TriangleTop" type="CollisionPolygon2D" parent="LevelSelector/Level3"]
+polygon = PoolVector2Array( 384, 32, 512, 128, 640, 32 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level3/TriangleTop"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 384, 32, 512, 128, 640, 32 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level3/TriangleTop"]
+points = PoolVector2Array( 384, 32, 512, 128, 640, 32, 384, 32 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="TriangleRight" type="CollisionPolygon2D" parent="LevelSelector/Level3"]
+polygon = PoolVector2Array( 992, 128, 896, 256, 992, 384 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level3/TriangleRight"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 992, 128, 896, 256, 992, 384 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level3/TriangleRight"]
+points = PoolVector2Array( 992, 128, 896, 256, 992, 384, 992, 128 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="TriangleLeft" type="CollisionPolygon2D" parent="LevelSelector/Level3"]
+polygon = PoolVector2Array( 32, 128, 128, 256, 32, 384 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level3/TriangleLeft"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 32, 128, 128, 256, 32, 384 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level3/TriangleLeft"]
+points = PoolVector2Array( 32, 128, 128, 256, 32, 384, 32, 128 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Level4" type="StaticBody2D" parent="LevelSelector"]
+script = ExtResource( 2 )
+
+[node name="Platform1" type="CollisionPolygon2D" parent="LevelSelector/Level4"]
+polygon = PoolVector2Array( 512, 384, 32, 576, 512, 432, 992, 576 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level4/Platform1"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 512, 384, 32, 576, 512, 432, 992, 576 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level4/Platform1"]
+points = PoolVector2Array( 512, 384, 32, 576, 512, 432, 992, 576, 512, 384 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Platform2" type="CollisionPolygon2D" parent="LevelSelector/Level4"]
+polygon = PoolVector2Array( 32, 32, 32, 256, 80, 80, 256, 32 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level4/Platform2"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 32, 32, 32, 256, 80, 80, 256, 32 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level4/Platform2"]
+points = PoolVector2Array( 32, 32, 32, 256, 80, 80, 256, 32, 32, 32 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Platform3" type="CollisionPolygon2D" parent="LevelSelector/Level4"]
+polygon = PoolVector2Array( 992, 32, 992, 256, 944, 80, 768, 32 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level4/Platform3"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 992, 32, 992, 256, 944, 80, 768, 32 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level4/Platform3"]
+points = PoolVector2Array( 992, 32, 992, 256, 944, 80, 768, 32, 992, 32 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Level5" type="StaticBody2D" parent="LevelSelector"]
+visible = false
+script = ExtResource( 2 )
+
+[node name="Platform1" type="CollisionPolygon2D" parent="LevelSelector/Level5"]
+polygon = PoolVector2Array( 256, 576, 768, 576, 768, 544, 256, 544 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level5/Platform1"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 256, 576, 768, 576, 768, 544, 256, 544 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level5/Platform1"]
+points = PoolVector2Array( 256, 576, 768, 576, 768, 544, 256, 544, 256, 576 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Platform4" type="CollisionPolygon2D" parent="LevelSelector/Level5"]
+polygon = PoolVector2Array( 128, 576, 128, 544, 64, 544, 64, 384, 32, 384, 32, 576 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level5/Platform4"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 128, 576, 128, 544, 64, 544, 64, 384, 32, 384, 32, 576 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level5/Platform4"]
+points = PoolVector2Array( 128, 576, 128, 544, 64, 544, 64, 384, 32, 384, 32, 576, 128, 576 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Platform5" type="CollisionPolygon2D" parent="LevelSelector/Level5"]
+polygon = PoolVector2Array( 896, 576, 992, 576, 992, 384, 960, 384, 960, 544, 896, 544 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level5/Platform5"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 896, 576, 992, 576, 992, 384, 960, 384, 960, 544, 896, 544 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level5/Platform5"]
+points = PoolVector2Array( 896, 576, 992, 576, 992, 384, 960, 384, 960, 544, 896, 544, 896, 576 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Platform2" type="CollisionPolygon2D" parent="LevelSelector/Level5"]
+polygon = PoolVector2Array( 304, 432, 336, 432, 336, 32, 32, 32, 32, 224, 64, 224, 64, 64, 304, 64 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level5/Platform2"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 304, 432, 336, 432, 336, 32, 32, 32, 32, 224, 64, 224, 64, 64, 304, 64 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level5/Platform2"]
+points = PoolVector2Array( 304, 432, 336, 432, 336, 32, 32, 32, 32, 224, 64, 224, 64, 64, 304, 64, 304, 432 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Platform3" type="CollisionPolygon2D" parent="LevelSelector/Level5"]
+polygon = PoolVector2Array( 720, 432, 688, 432, 688, 32, 992, 32, 992, 224, 960, 224, 960, 64, 720, 64 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level5/Platform3"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 720, 432, 688, 432, 688, 32, 992, 32, 992, 224, 960, 224, 960, 64, 720, 64 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level5/Platform3"]
+points = PoolVector2Array( 720, 432, 688, 432, 688, 32, 992, 32, 992, 224, 960, 224, 960, 64, 720, 64, 720, 432 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Level6" type="StaticBody2D" parent="LevelSelector"]
+script = ExtResource( 2 )
+
+[node name="Platform1" type="CollisionPolygon2D" parent="LevelSelector/Level6"]
+polygon = PoolVector2Array( 384, 480, 384, 576, 640, 576, 640, 480 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level6/Platform1"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 384, 480, 384, 576, 640, 576, 640, 480 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level6/Platform1"]
+points = PoolVector2Array( 384, 480, 384, 576, 640, 576, 640, 480, 384, 480 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Platform2" type="CollisionPolygon2D" parent="LevelSelector/Level6"]
+polygon = PoolVector2Array( 304, 480, 304, 576, 208, 576, 208, 480 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level6/Platform2"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 304, 480, 304, 576, 208, 576, 208, 480 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level6/Platform2"]
+points = PoolVector2Array( 304, 480, 304, 576, 208, 576, 208, 480, 304, 480 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Platform3" type="CollisionPolygon2D" parent="LevelSelector/Level6"]
+polygon = PoolVector2Array( 128, 480, 128, 576, 32, 576, 32, 480 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level6/Platform3"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 128, 480, 128, 576, 32, 576, 32, 480 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level6/Platform3"]
+points = PoolVector2Array( 128, 480, 128, 576, 32, 576, 32, 480, 128, 480 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Platform4" type="CollisionPolygon2D" parent="LevelSelector/Level6"]
+polygon = PoolVector2Array( 816, 480, 816, 576, 720, 576, 720, 480 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level6/Platform4"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 816, 480, 816, 576, 720, 576, 720, 480 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level6/Platform4"]
+points = PoolVector2Array( 816, 480, 816, 576, 720, 576, 720, 480, 816, 480 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Platform5" type="CollisionPolygon2D" parent="LevelSelector/Level6"]
+polygon = PoolVector2Array( 992, 480, 992, 576, 896, 576, 896, 480 )
+
+[node name="Polygon2D" type="Polygon2D" parent="LevelSelector/Level6/Platform5"]
+texture = ExtResource( 5 )
+polygon = PoolVector2Array( 992, 480, 992, 576, 896, 576, 896, 480 )
+
+[node name="Line2D" type="Line2D" parent="LevelSelector/Level6/Platform5"]
+points = PoolVector2Array( 992, 480, 992, 576, 896, 576, 896, 480, 992, 480 )
+width = 4.0
+default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
 [node name="CharacterSpawner" type="Control" parent="."]
-margin_left = 208.0
+margin_left = 384.0
 margin_top = 160.0
-margin_right = 816.0
-margin_bottom = 256.0
+margin_right = 640.0
+margin_bottom = 384.0
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
