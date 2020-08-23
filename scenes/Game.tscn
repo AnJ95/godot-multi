@@ -25,14 +25,14 @@ __meta__ = {
 [node name="StaticTerrain" type="StaticBody2D" parent="."]
 script = ExtResource( 2 )
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticTerrain"]
+[node name="BigPlatformA" type="CollisionPolygon2D" parent="StaticTerrain"]
 polygon = PoolVector2Array( 128, 448, 128, 512, 256, 512, 448, 576, 576, 576, 768, 512, 896, 512, 896, 448, 768, 448, 576, 512, 448, 512, 256, 448 )
 
-[node name="Polygon2D" type="Polygon2D" parent="StaticTerrain"]
+[node name="Polygon2D" type="Polygon2D" parent="StaticTerrain/BigPlatformA"]
 texture = ExtResource( 5 )
 polygon = PoolVector2Array( 128, 448, 128, 512, 256, 512, 448, 576, 576, 576, 768, 512, 896, 512, 896, 448, 768, 448, 576, 512, 448, 512, 256, 448 )
 
-[node name="Line2D" type="Line2D" parent="StaticTerrain"]
+[node name="Line2D" type="Line2D" parent="StaticTerrain/BigPlatformA"]
 points = PoolVector2Array( 128, 448, 128, 512, 256, 512, 448, 576, 576, 576, 768, 512, 896, 512, 896, 448, 768, 448, 576, 512, 448, 512, 256, 448, 128, 448 )
 width = 4.0
 default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
@@ -40,17 +40,14 @@ joint_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 2
 
-[node name="StaticTerrain2" type="StaticBody2D" parent="."]
-script = ExtResource( 2 )
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticTerrain2"]
+[node name="TriangleTop" type="CollisionPolygon2D" parent="StaticTerrain"]
 polygon = PoolVector2Array( 384, 32, 512, 128, 640, 32 )
 
-[node name="Polygon2D" type="Polygon2D" parent="StaticTerrain2"]
+[node name="Polygon2D" type="Polygon2D" parent="StaticTerrain/TriangleTop"]
 texture = ExtResource( 5 )
 polygon = PoolVector2Array( 384, 32, 512, 128, 640, 32 )
 
-[node name="Line2D" type="Line2D" parent="StaticTerrain2"]
+[node name="Line2D" type="Line2D" parent="StaticTerrain/TriangleTop"]
 points = PoolVector2Array( 384, 32, 512, 128, 640, 32, 384, 32 )
 width = 4.0
 default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
@@ -58,17 +55,14 @@ joint_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 2
 
-[node name="StaticTerrain3" type="StaticBody2D" parent="."]
-script = ExtResource( 2 )
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticTerrain3"]
+[node name="TriangleRight" type="CollisionPolygon2D" parent="StaticTerrain"]
 polygon = PoolVector2Array( 992, 128, 896, 256, 992, 384 )
 
-[node name="Polygon2D" type="Polygon2D" parent="StaticTerrain3"]
+[node name="Polygon2D" type="Polygon2D" parent="StaticTerrain/TriangleRight"]
 texture = ExtResource( 5 )
 polygon = PoolVector2Array( 992, 128, 896, 256, 992, 384 )
 
-[node name="Line2D" type="Line2D" parent="StaticTerrain3"]
+[node name="Line2D" type="Line2D" parent="StaticTerrain/TriangleRight"]
 points = PoolVector2Array( 992, 128, 896, 256, 992, 384, 992, 128 )
 width = 4.0
 default_color = Color( 0.427451, 0.427451, 0.427451, 1 )
@@ -76,17 +70,14 @@ joint_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 2
 
-[node name="StaticTerrain4" type="StaticBody2D" parent="."]
-script = ExtResource( 2 )
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticTerrain4"]
+[node name="TriangleLeft" type="CollisionPolygon2D" parent="StaticTerrain"]
 polygon = PoolVector2Array( 32, 128, 128, 256, 32, 384 )
 
-[node name="Polygon2D" type="Polygon2D" parent="StaticTerrain4"]
+[node name="Polygon2D" type="Polygon2D" parent="StaticTerrain/TriangleLeft"]
 texture = ExtResource( 5 )
 polygon = PoolVector2Array( 32, 128, 128, 256, 32, 384 )
 
-[node name="Line2D" type="Line2D" parent="StaticTerrain4"]
+[node name="Line2D" type="Line2D" parent="StaticTerrain/TriangleLeft"]
 points = PoolVector2Array( 32, 128, 128, 256, 32, 384, 32, 128 )
 width = 4.0
 default_color = Color( 0.427451, 0.427451, 0.427451, 1 )

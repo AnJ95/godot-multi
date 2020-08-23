@@ -2,13 +2,17 @@ tool
 extends StaticBody2D
 
 func _ready():
-	$CollisionPolygon2D.polygon = $Polygon2D.polygon
 	
-	var size = $Polygon2D.polygon.size()
-	var path = PoolVector2Array()
-	path.resize(size + 1)
-	for i in range(size):
-		path[i] = $Polygon2D.polygon[i]
-	path[size] = $Polygon2D.polygon[0]
+	for collision in get_children():
+		var polygon = collision.get_node("Polygon2D")
+		var line = collision.get_node("Line2D")
 		
-	$Line2D.points = path
+		polygon.polygon = collision.polygon
+		
+		var size = collision.polygon.size()
+		var path = PoolVector2Array()
+		path.resize(size + 1)
+		for i in range(size):
+			path[i] = collision.polygon[i]
+		path[size] = collision.polygon[0]
+		line.points = path
