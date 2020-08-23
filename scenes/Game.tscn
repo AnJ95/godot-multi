@@ -2,8 +2,8 @@
 
 [ext_resource path="res://scenes/Game.gd" type="Script" id=1]
 [ext_resource path="res://game/StaticTerrain.gd" type="Script" id=2]
+[ext_resource path="res://scenes/CharacterSpawner.gd" type="Script" id=3]
 [ext_resource path="res://addons/multi/components/MultiPlayerStatus.gd" type="Script" id=4]
-[ext_resource path="res://game/Character.tscn" type="PackedScene" id=6]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -53,23 +53,15 @@ polygon = PoolVector2Array( 128, 256, 32, 384, 32, 128 )
 
 [node name="Polygon2D" type="Polygon2D" parent="StaticTerrain4"]
 
-[node name="Character" parent="." instance=ExtResource( 6 )]
-position = Vector2( 320, 160 )
-
-[node name="Character2" parent="." instance=ExtResource( 6 )]
-position = Vector2( 448, 192 )
-player_id = 1
-color = Color( 0.568627, 0.8, 0.2, 0.901961 )
-
-[node name="Character3" parent="." instance=ExtResource( 6 )]
-position = Vector2( 576, 192 )
-player_id = 2
-color = Color( 0.2, 0.647059, 0.8, 0.901961 )
-
-[node name="Character4" parent="." instance=ExtResource( 6 )]
-position = Vector2( 704, 160 )
-player_id = 3
-color = Color( 0.627451, 0.2, 0.8, 0.901961 )
+[node name="CharacterSpawner" type="Control" parent="."]
+margin_left = 208.0
+margin_top = 160.0
+margin_right = 816.0
+margin_bottom = 256.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="UI" type="CanvasLayer" parent="."]
 

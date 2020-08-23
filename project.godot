@@ -37,6 +37,8 @@ Multi="*res://addons/multi/autoloads/Multi.gd"
 [display]
 
 window/size/height=608
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
 
 [editor_plugins]
 
