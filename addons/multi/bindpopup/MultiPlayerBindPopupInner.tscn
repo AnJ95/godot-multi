@@ -17,8 +17,7 @@ __meta__ = {
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 margin_right = 172.0
-margin_bottom = 130.0
-custom_constants/separation = 15
+margin_bottom = 108.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -38,26 +37,25 @@ show_controller_status = true
 open_bind_popup_on_click = false
 
 [node name="Spacer" type="Control" parent="VBoxContainer"]
-margin_top = 95.0
+margin_top = 84.0
 margin_right = 172.0
-margin_bottom = 95.0
+margin_bottom = 84.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 110.0
+margin_top = 88.0
 margin_right = 172.0
-margin_bottom = 130.0
-custom_constants/separation = 15
+margin_bottom = 108.0
 alignment = 1
 
 [node name="ButtonUnbind" type="Button" parent="VBoxContainer/HBoxContainer"]
-margin_left = 34.0
-margin_right = 92.0
+margin_left = 39.0
+margin_right = 97.0
 margin_bottom = 20.0
 text = "Unbind"
 
 [node name="ButtonOK" type="Button" parent="VBoxContainer/HBoxContainer"]
-margin_left = 107.0
-margin_right = 138.0
+margin_left = 101.0
+margin_right = 132.0
 margin_bottom = 20.0
 text = "OK"
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/ButtonUnbind" to="." method="_on_ButtonUnbind_pressed"]
