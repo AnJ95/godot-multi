@@ -7,7 +7,6 @@ signal lost(character)
 
 # get Player object from customizable player_id
 export(int) var player_id:int = 0
-export(Color) var color = Color(0.8, 0.2, 0.2, 0.9) setget _on_set_color
 
 onready var player:Player = Multi.player(player_id)
 onready var game_bounds = get_viewport_rect().grow(out_of_screen_tolerance)
@@ -26,6 +25,7 @@ const bounce_factor = 0.5
 const gravity = 300
 const health_initial = 3
 
+var player_color:Color
 var health = health_initial
 var velocity = Vector2.ZERO
 var is_dead = false
@@ -38,7 +38,11 @@ var squish_rotation = 0
 func _ready():
 	player.connect("controller_connection_changed", self, "_on_controller_connection_changed")
 	_on_controller_connection_changed()
-	_on_set_color(color)
+	
+	player_color = player.get_player_color()
+	$Sprites/Sprite.modulate = player_color
+	$ParticlesDead.modulate = player_color
+	
 	emit_signal("health_changed", health)
 
 func _physics_process(delta):
@@ -131,8 +135,4 @@ func _on_controller_connection_changed():
 	else:
 		$AnimationPlayer.play("controller_disconnected")
 
-func _on_set_color(v):
-	color = v
-	$Sprites/Sprite.modulate = color
-	$ParticlesDead.modulate = color
 

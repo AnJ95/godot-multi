@@ -22,6 +22,13 @@ func _on_controller_connection_changed():
 func __convert_action(action:String)->String:
 	return "p_%d_%s" % [__player_id, action]
 
+var __player_color:Color
+func get_player_color()->Color:
+	if !__player_color:
+		var hue = __player_id / float(Multi.MAX_PLAYERS)
+		__player_color = Color().from_hsv(hue, 0.7, 0.6, 1)
+	return __player_color
+	
 func get_controller()->Controller:
 	return __controller
 	

@@ -12,7 +12,7 @@ func _ready():
 		characters_still_alive.append(character)
 		
 		var label = Label.new()
-		label.modulate = character.color
+		label.modulate = character.player_color
 		char_health.add_child(label)
 		
 		character.connect("health_changed", self, "_on_health_changed", [label])

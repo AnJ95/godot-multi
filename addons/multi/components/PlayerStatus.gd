@@ -85,11 +85,15 @@ func _on_player_state_changed(_x=null):
 	
 	if player and player.is_controller_connected():
 		icon_player = icon_player_connected
-	elif Multi.is_enforcing_player_num() and player_id < Multi.__enforce_min:
+	elif Multi.is_enforcing_player_num() and !Multi.is_enforcement_satisfied():
 		icon_player = icon_player_required
 		
 	
 	check_player_status_icon()
+	if icon_player == icon_player_connected:
+		player_status.modulate = player.get_player_color()
+	else:
+		player_status.modulate = Color(1,1,1,1)
 	player_status.texture = icon_player
 	
 	# Show controller status

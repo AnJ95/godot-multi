@@ -6,7 +6,6 @@ const Character = preload("res://game/Character.tscn")
 func spawn(player_id:int):
 	var inst = Character.instance()
 	inst.player_id = player_id
-	inst.color = get_player_color(player_id)
 	inst.connect("respawn_character", self, "respawn")
 	add_child(inst)
 	inst.global_position = get_valid_spawn_point()
@@ -30,9 +29,5 @@ func get_valid_spawn_point()->Vector2:
 					break
 		iterations += 1
 	return spawn
-	
-func get_player_color(player_id:int)->Color:
-	var hue = player_id / float(Multi.get_num_assigned_players())
-	return Color().from_hsv(hue, 0.7, 0.6, 1)
 	
 
