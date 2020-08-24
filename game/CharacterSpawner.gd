@@ -12,7 +12,7 @@ func spawn(player_id:int):
 	return inst
 
 func respawn(character):
-	character.global_position = get_valid_spawn_point()
+	character.respawn_at(get_valid_spawn_point())
 	
 func get_valid_spawn_point()->Vector2:
 	var spawn = null

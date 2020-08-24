@@ -14,6 +14,7 @@ onready var game_bounds = get_viewport_rect().grow(out_of_screen_tolerance)
 onready var sprite = $Sprites
 onready var animation_player:AnimationPlayer = $AnimationPlayer
 onready var particles_dead:Particles2D = $ParticlesDead
+onready var particles_spawn:Particles2D = $ParticlesSpawn
 onready var timer_dead:Timer = $TimerDead
 
 
@@ -41,7 +42,9 @@ func _ready():
 	
 	player_color = player.get_player_color()
 	$Sprites/Sprite.modulate = player_color
-	$ParticlesDead.modulate = player_color
+	particles_dead.modulate = player_color
+	particles_spawn.modulate = player_color
+	particles_spawn.emitting = true
 	
 	emit_signal("health_changed", health)
 
@@ -84,12 +87,8 @@ func _physics_process(delta):
 	if !game_bounds.has_point(global_position):
 		particles_dead.rotation = Vector2.UP.angle_to(velocity)
 		particles_dead.emitting = true
-		velocity.x = 0
-		velocity.y = 0
-		health -= 1
-		has_dashed = true
 		is_dead = true
-		
+		health -= 1
 		emit_signal("health_changed", health)
 		
 		if health > 0:
@@ -104,6 +103,13 @@ func win():
 	$Tween.interpolate_property(sprite, "scale", sprite.scale, Vector2(30, 30), 3,Tween.TRANS_EXPO, Tween.EASE_IN_OUT)
 	$Tween.connect("tween_all_completed", get_tree(), "reload_current_scene")
 	$Tween.start()
+
+func respawn_at(global_pos:Vector2):
+	velocity.x = 0
+	velocity.y = 0
+	has_dashed = true
+	global_position = global_pos
+	particles_spawn.emitting = true
 	
 func _on_TimerDead_timeout():
 	emit_signal("respawn_character", self)
