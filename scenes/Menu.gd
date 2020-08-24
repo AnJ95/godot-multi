@@ -2,8 +2,9 @@ tool
 extends CanvasLayer
 
 func _ready():
-	$MarginContainer/VBoxContainer/VBoxContainer/ButtonControls.grab_focus()
+	$MarginContainer/VBoxContainer/VBoxContainer/ButtonSingleplayer.grab_focus()
 	OS.center_window()
+	Multi.call_deferred("set_bind_popup_theme", $MarginContainer.theme)
 
 func _on_ButtonSingleplayer_pressed():
 	get_tree().change_scene("res://scenes/Game.tscn")

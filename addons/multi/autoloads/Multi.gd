@@ -60,6 +60,9 @@ func _ready():
 		var player = Player.new(i)
 		__players.append(player)
 	
+	# Keep going even if pause
+	self.pause_mode = Node.PAUSE_MODE_PROCESS
+	
 	# Don't add controllers in editor
 	if Engine.editor_hint:
 		return
@@ -154,6 +157,9 @@ func _on_joy_connection_changed(device_id:int, connected:bool):
 func _on_num_assigned_players_changed(_num):
 	# Check enforcement condition
 	__check_enforce()
+
+func set_bind_popup_theme(theme:Theme)->void:
+	get_bind_popup_singleton().set_theme(theme)
 	
 func get_bind_popup_singleton()->WindowDialog:
 	var popup = get_tree().get_nodes_in_group("MultiPlayerBindPopup")

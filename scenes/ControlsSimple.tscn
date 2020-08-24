@@ -32,7 +32,7 @@ size_flags_stretch_ratio = 4.0
 
 [node name="MultiPlayerControlMenu" type="GridContainer" parent="MarginContainer/VBoxContainer"]
 margin_right = 964.0
-margin_bottom = 427.0
+margin_bottom = 439.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 2
@@ -40,9 +40,9 @@ script = ExtResource( 5 )
 make_simple = true
 
 [node name="ButtonBack" type="Button" parent="MarginContainer/VBoxContainer"]
-margin_top = 443.0
+margin_top = 449.0
 margin_right = 964.0
-margin_bottom = 492.0
+margin_bottom = 498.0
 focus_mode = 0
 text = "Back"
 script = ExtResource( 3 )
@@ -56,10 +56,10 @@ margin_bottom = 548.0
 alignment = 2
 
 [node name="MultiPlayerStatus" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 756.0
+margin_left = 774.0
 margin_right = 964.0
 margin_bottom = 40.0
-rect_min_size = Vector2( 208, 40 )
+rect_min_size = Vector2( 190, 40 )
 focus_mode = 0
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 1 )

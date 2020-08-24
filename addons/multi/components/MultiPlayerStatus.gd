@@ -34,6 +34,11 @@ func _ready():
 	
 	rect_min_size = hbox.rect_size
 	
+	connect("draw", self, "_on_draw")
+	
+func _on_draw():
+	rect_min_size = hbox.rect_size
+	
 func recreate():
 	if !hbox:
 		# add hbox
