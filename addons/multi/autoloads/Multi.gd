@@ -223,7 +223,9 @@ func is_enforcement_satisfied()->bool:
 func __check_enforce():
 	if __enforcing:
 		if !is_enforcement_satisfied():
-			get_bind_popup_singleton().popup_centered()
+			var popup = get_bind_popup_singleton()
+			if !popup.visible:
+				popup.popup_centered()
 	
 func player(player_id)->Player:
 	if player_id >= 0 and player_id < __players.size():

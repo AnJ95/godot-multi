@@ -79,8 +79,15 @@ func rebind_to_player(player, input_map):
 				
 func unbind_from_player(player, input_map):
 	for action in input_map:
+		# Erase all player specific actions
 		var converted_action = player.__convert_action(action)
 		InputMap.erase_action(converted_action)
+		
+		# Also remove ui access (if there)
+		if action.begins_with("ui_"):
+			for event in InputMap.get_action_list(action):
+				if is_event_from_this_controller(event):
+					InputMap.action_erase_event(action, event)
 	create_join_action()
 	
 func get_name()->String:

@@ -10,11 +10,11 @@ func _ready():
 
 func _on_about_to_show():
 	btn_ok.call_deferred("grab_focus")
-	if !Engine.editor_hint:
+	if is_inside_tree():
 		get_tree().paused = true
 
 func _on_popup_hide():
-	if !Engine.editor_hint:
+	if is_inside_tree():
 		get_tree().paused = false
 
 func _on_num_assigned_players_changed(_num):
