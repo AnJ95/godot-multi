@@ -3,7 +3,7 @@ extends Node
 var num_players
 
 func _ready():
-	Multi.start_enforcing_player_num()
+	Multi.start_enforcing_players()
 	num_players = Multi.get_num_assigned_players()
 	
 	var char_health = $UI/MarginContainer/VBoxContainer/HBoxContainer2/CharacterHealth

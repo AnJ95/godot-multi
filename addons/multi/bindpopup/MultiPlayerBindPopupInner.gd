@@ -18,7 +18,7 @@ func _on_popup_hide():
 		get_tree().paused = false
 
 func _on_num_assigned_players_changed(_num):
-	if Multi.is_enforcing_player_num():
+	if Multi.is_enforcing_players():
 		btn_ok.disabled = !Multi.is_enforcement_satisfied()
 
 func _on_ButtonOK_pressed():

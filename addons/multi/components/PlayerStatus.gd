@@ -85,7 +85,7 @@ func _on_player_state_changed(_x=null):
 	
 	if player and player.is_controller_connected():
 		icon_player = icon_player_connected
-	elif Multi.is_enforcing_player_num() and !Multi.is_enforcement_satisfied():
+	elif Multi.is_player_enforced(player_id):
 		icon_player = icon_player_required
 		
 	

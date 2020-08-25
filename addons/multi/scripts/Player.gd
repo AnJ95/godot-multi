@@ -15,8 +15,7 @@ func _init(player_id:int):
 	connect("controller_connection_changed", self, "_on_controller_connection_changed")
 	
 func _on_controller_connection_changed():
-	if is_controller_disconnected():
-		Multi.emit_signal("num_assigned_players_changed", Multi.get_num_assigned_players())
+	Multi.emit_signal("num_assigned_players_changed", Multi.get_num_assigned_players())
 	vibrate(ASSIGN_VIBRATE_WEAK, ASSIGN_VIBRATE_STRONG, ASSIGN_VIBRATE_DURATION)
 	
 func __convert_action(action:String)->String:
@@ -39,6 +38,7 @@ func set_controller(controller:Controller, input_map)->void:
 		__controller = controller
 		controller.rebind_to_player(self, input_map)
 		emit_signal("controller_connection_changed")
+		controller.connect("connection_changed", self, "emit_signal", ["controller_connection_changed"])
 	else:
 		unassign_controller(input_map)
 	
@@ -47,7 +47,9 @@ func unassign_controller(input_map):
 		# Debug print
 		print("[CONTROLLER UNASSIGNED] Player %d from Controller %d: %s" % [__player_id + 1, __controller.__device_id, __controller.get_name()])
 		__controller.unbind_from_player(self, input_map)
+		__controller.disconnect("connection_changed", self, "emit_signal")
 		__controller = null
+		
 		emit_signal("controller_connection_changed")
 		Multi.emit_signal("num_assigned_players_changed", Multi.get_num_assigned_players())
 	

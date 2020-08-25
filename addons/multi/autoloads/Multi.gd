@@ -203,29 +203,46 @@ func get_num_known_controllers()->int:
 
 
 var __enforcing:bool = false
-var __enforce_min:int
-func start_enforcing_player_num(num_min=-1, num_max=-1)->void:
+var __enforced_player_ids = []
+func start_enforcing_players(num=-1)->void:
 	__enforcing = true
-	__enforce_min = get_num_assigned_players() if num_min == -1 else num_min
-	
+	__enforced_player_ids = []
+	var enforce_num = get_num_assigned_players() if num == -1 else num
+	for player in __players:
+		if enforce_num == 0:
+			break
+		if player.is_controller_connected():
+			__enforced_player_ids.append(player.__player_id)
+			enforce_num -= 1
+	if enforce_num > 0:
+		printerr("Could not enforce ", str(num), " players, there are only ", str(get_num_assigned_players()), " assigned!")
 	__check_enforce()
 	
-func stop_enforcing_player_num()->void:
+func stop_enforcing_players()->void:
 	__enforcing = false
 
-func is_enforcing_player_num()->bool:
+func is_enforcing_players()->bool:
 	return __enforcing
 
+func is_player_enforced(player_id:int)->bool:
+	return is_enforcing_players() and player_id in __enforced_player_ids
+	
 func is_enforcement_satisfied()->bool:
-	var n = get_num_assigned_players()
-	return n >= __enforce_min
+	if !is_enforcing_players():
+		return true
+	for player_id in __enforced_player_ids:
+		var player:Player = __players[player_id]
+		if !player.has_controller_assigned():
+			return false
+		if !player.is_controller_connected():
+			return false
+	return true
 	
 func __check_enforce():
-	if __enforcing:
-		if !is_enforcement_satisfied():
-			var popup = get_bind_popup_singleton()
-			if !popup.visible:
-				popup.popup_centered()
+	if !is_enforcement_satisfied():
+		var popup = get_bind_popup_singleton()
+		if !popup.visible:
+			popup.popup_centered()
 	
 func player(player_id)->Player:
 	if player_id >= 0 and player_id < __players.size():
