@@ -32,7 +32,7 @@ size_flags_stretch_ratio = 4.0
 
 [node name="MultiPlayerControlMenu" type="GridContainer" parent="MarginContainer/VBoxContainer"]
 margin_right = 964.0
-margin_bottom = 439.0
+margin_bottom = 446.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 2
@@ -40,7 +40,7 @@ script = ExtResource( 5 )
 make_simple = true
 
 [node name="ButtonBack" type="Button" parent="MarginContainer/VBoxContainer"]
-margin_top = 449.0
+margin_top = 456.0
 margin_right = 964.0
 margin_bottom = 498.0
 focus_mode = 0

@@ -30,7 +30,11 @@ func _ready():
 		label.text = Multi.PRETTY_ACTION_NAMES[action]
 	else:
 		label.text = (action.substr(0, 1).to_upper() + action.substr(1, -1).to_lower()).replace("_", " ")
-	btn_add.rect_min_size.x = btn_add.rect_size.y
+	
+	# Make button quadratic if there
+	if btn_add:
+		btn_add.rect_min_size.x = btn_add.rect_size.y
+		
 	add_all_buttons()
 
 func add_all_buttons():
