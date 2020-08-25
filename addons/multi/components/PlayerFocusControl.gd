@@ -226,11 +226,11 @@ func find_focus_direction(dir:Vector2)->Control:
 		if dst <= 0:
 			continue
 		
-		# if found better (or first iteration:
+		# if found better (or first iteration):
 		if dst < best_dst or best_fits.size() == 0:
 			best_fits = [other]
 			best_dst = dst
-		# if they hay the same distance:
+		# if they have the same distance:
 		elif dst == best_dst:
 			best_fits.append(other)
 	
