@@ -8,6 +8,7 @@ signal control_changed()
 #############################################################
 # NODES
 onready var button = $Button
+onready var button_remove = $ButtonRemove
 
 #############################################################
 # CONSTS
@@ -47,7 +48,9 @@ func init(player_id, action, event_i):
 func _ready():
 	button.text = get_display_caption()
 	if !show_button_remove:
-		$ButtonRemove.hide()
+		button_remove.hide()
+	else:
+		button_remove.rect_min_size.x = button_remove.rect_size.y
 
 #############################################################
 # AWAITING CONDITION

@@ -4,6 +4,7 @@ extends Control
 const ControlMenuButton = preload("ControlMenuButton.tscn")
 
 var label
+var btn_add
 var btn_root
 
 var player_id:int = 0
@@ -17,8 +18,9 @@ func init(player_id:int, action:String):
 	
 	label = $VBoxContainer/HBoxContainer/Label
 	btn_root = $VBoxContainer/ControlMenuButtons
-
-	$VBoxContainer/HBoxContainer/ButtonAdd.player_id = player_id
+	btn_add = $VBoxContainer/HBoxContainer/ButtonAdd
+	
+	btn_add.player_id = player_id
 	
 	player = Multi.player(player_id)
 	
@@ -28,7 +30,7 @@ func _ready():
 		label.text = Multi.PRETTY_ACTION_NAMES[action]
 	else:
 		label.text = (action.substr(0, 1).to_upper() + action.substr(1, -1).to_lower()).replace("_", " ")
-	
+	btn_add.rect_min_size.x = btn_add.rect_size.y
 	add_all_buttons()
 
 func add_all_buttons():
